@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import MainLayout from './Layout/MainLayout.jsx'
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Container, FormControl, Grid, InputLabel, OutlinedInput, Select, Typography } from '@mui/material'
 import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import PageLoader from '../Components/PageLoader.jsx';
 import host from '../Data/Data..js';
 
@@ -175,9 +175,9 @@ const Product = () => {
                                                 Buy Now
                                                 </Typography>
                                             </Button>
-                                            <Button sx={{flexGrow: 0}}>
+                                            <Button component={Link} to={`/productDetail/${data._id}`} sx={{flexGrow: 0}}>
                                                 <Typography variant='body2' sx={{display:{xs: 'none', md: 'inline'}}}>
-                                                Add Wishlist
+                                                View Detail
                                                 </Typography>
                                             </Button>
                                         </CardActions>

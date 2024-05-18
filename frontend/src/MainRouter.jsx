@@ -6,6 +6,7 @@ import { AuthContextProvider } from './Context/AuthContext'
 import Review from './Pages/Review.jsx'
 import Contact from './Pages/Contact.jsx'
 import Product from './Pages/Product.jsx'
+import ProductDetail from './Pages/ProductDetail.jsx'
 const MainRouter = () => {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ const MainRouter = () => {
               <Route path='/Product' element={<Product />} />
               <Route path='/Review' element={<Review />} />
               <Route path='/Contact' element={<Contact />} />
+              <Route path='/productDetail/:id' element={<ProductDetail />} />
           </Routes>
       </AuthContextProvider>
     </BrowserRouter>
