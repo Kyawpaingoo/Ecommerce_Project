@@ -70,7 +70,7 @@ const generateAccessToken = (payload) =>{
     return access_token;
 }
 
-export const checkAuth = (role) => (req, res, next)=>{
+export const checkAuth = (req, res, next)=>{
     const {access_token} = req.cookies;
     const jwt_secrect = process.env.JWT_TOKEN;
     
@@ -82,12 +82,6 @@ export const checkAuth = (role) => (req, res, next)=>{
         if(error){
             return res.json('not_auth');
         }
-        req.AuthUser = data;
-        if(access_token && req.AuthUser && req.AuthUser.role == role){
-            next();
-        }
-        else{
-            return res.json(errorJson('Forbidden', null));
-        }
+        return res.json(data);
     })
 }

@@ -7,8 +7,7 @@ const OrderSchema = new mongose.Schema({
         required: true,
     },
     user:{
-        type: mongose.Schema.ObjectId,
-        ref:'users',
+        type: String,
         required: true,
     },
     price:{
@@ -24,6 +23,8 @@ const OrderSchema = new mongose.Schema({
         type: String, 
         required: true
     }
+},{
+    timestamps: true
 })
 
 OrderSchema.index({code: 'code'});

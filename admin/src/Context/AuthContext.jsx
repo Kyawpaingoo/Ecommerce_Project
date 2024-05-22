@@ -18,6 +18,7 @@ export const AuthContextProvider = (props) =>{
                     break;
                 case data.data === 'admin':
                     setAuthUser(true);
+                    console.log()
                     break;
                 default:
                     setAuthUser(false);

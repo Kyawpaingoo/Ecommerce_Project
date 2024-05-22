@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import DashboardLayout from '../Layout/DashboardLayout.jsx'
-import { Box, Stack, Table, TableBody, TableCell, Button, TableHead, TableRow, Typography  } from '@mui/material'
+import { Box, Stack, Table, TableBody, TableCell, Button, TableHead, TableRow, Typography, IconButton,  } from '@mui/material'
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import host from '../../Data/Data..js';
 import {Link} from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ProductList = () => {
     
@@ -14,6 +15,7 @@ const ProductList = () => {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(null);
     const [count, setCount] = useState(0);
+    const [message, setMessage] = useState('');
     useEffect(()=>{
         const fetchData = async()=>{
             await axios.get('/product/all').then((d)=>{
@@ -23,7 +25,19 @@ const ProductList = () => {
             })
         }
         fetchData();
-    }, [page]);
+    }, [products,page]);
+
+    const destroy = async (id)=>{
+        await axios.post(`/product/destroy/${id}`).then((d)=>{
+            if(d.data == 'success'){
+                setMessage('Product Deleted.');
+            }
+        })
+    }
+
+    const closeMessage = ()=>{
+        setMessage('');
+    }
   return (
     <DashboardLayout>
         <Box>
@@ -32,6 +46,17 @@ const ProductList = () => {
                 Create
             </Button>
         </Box>
+        {
+            message && (
+                <Box sx={{width: '100%', marginY: 2, backgroundColor: '#00e676'}} display={'flex'}>
+                    <Typography paddingY={1} paddingLeft={2} color={'white'}>Product Message</Typography>
+                    <IconButton onClick={closeMessage} sx={{marginLeft:'auto'}}>
+                        <CloseIcon sx={{color: 'white'}}  />
+                    </IconButton>
+                </Box>
+            )
+        }
+       
         <Table size='sm'>
             <TableHead>
                 <TableRow>
@@ -81,10 +106,11 @@ const ProductList = () => {
                                 <TableCell>{d.gender}</TableCell>
                                 <TableCell>{d.brand}</TableCell>
                                 <TableCell>{d.category}</TableCell>
+                                
                                 <TableCell>
                                     <Stack direction={'row'} spacing={2}>
                                         <Button variant='contained' endIcon={<EditIcon />}>Edit</Button>
-                                        <Button variant="contained" endIcon={<DeleteIcon />} color='error'>
+                                        <Button onClick={()=>destroy(d._id)} variant="contained" endIcon={<DeleteIcon />} color='error'>
                                             Delete
                                         </Button>
                                     </Stack>

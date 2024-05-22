@@ -85,25 +85,25 @@ const DashboardLayout = (props) => {
           <Toolbar />
           <Divider />
           <List>
-            <MenuItem component={Link} to="/">
+            <MenuItem component={Link} to="/" sx={{marginY: 2}}>
               <ListItemIcon>
                 <Inbox />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </MenuItem>
-            <MenuItem component={Link} to="/customers">
+            <MenuItem component={Link} to="/customers" sx={{marginY: 2}}>
               <ListItemIcon>
                 <Inbox />
               </ListItemIcon>
               <ListItemText primary="Customers" />
             </MenuItem>
-            <MenuItem component={Link} to="/product">
+            <MenuItem component={Link} to="/product" sx={{marginY: 2}}>
               <ListItemIcon>
                 <Inbox />
               </ListItemIcon>
               <ListItemText primary="Products" />
             </MenuItem>
-            <MenuItem component={Link} to="/orders">
+            <MenuItem component={Link} to="/order" sx={{marginY: 2}}>
               <ListItemIcon>
                 <Inbox />
               </ListItemIcon>

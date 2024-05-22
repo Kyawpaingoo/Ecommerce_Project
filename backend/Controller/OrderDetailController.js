@@ -19,3 +19,9 @@ export const getByID = async(req, res)=>{
     const result = await OrderDetailModel.findById(id);
     res.json(result);
 }
+
+export const getByOrderID = async(req, res)=>{
+    const id= req.params.id;
+    const result = await OrderDetailModel.find({order_id: id}).populate('product');
+    res.json(result);
+}

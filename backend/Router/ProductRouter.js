@@ -11,7 +11,7 @@ ProductRouter.get('/:id', getById);
 ProductRouter.post('/store',checkAuth, checkAuthorize('staff'), store);
 ProductRouter.get("/edit/:id", checkAuth, checkAuthorize('staff'), edit);
 ProductRouter.post('/update/:id', checkAuth, checkAuthorize('staff'), update);
-ProductRouter.post('/destroy/:id', checkAuth, checkAuthorize('staff'), destroy);
+ProductRouter.post('/destroy/:id', checkAuth, checkAuthorize('admin'), destroy);
 
 
 
