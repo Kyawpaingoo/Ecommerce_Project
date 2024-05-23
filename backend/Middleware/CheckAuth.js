@@ -14,6 +14,7 @@ export const checkAuth = (req, res, next)=>{
             return res.json('not_auth');
         }
         req.AuthUser = data;
+        console.log(req.AuthUser)
         next();
     })
 }

@@ -10,7 +10,7 @@ const OrderSchema = new mongose.Schema({
         type: String,
         required: true,
     },
-    price:{
+    subTotalPrice:{
         type: Number,
         required: true,
     },

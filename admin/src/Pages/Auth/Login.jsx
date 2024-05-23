@@ -28,20 +28,20 @@ const Login = () => {
 
     const login = async()=>{
         await axios.post('/login', {email, password}).then(({data})=>{
+            console.log(data)
             if(data.message== 'email not found'){
                 return setErrorMessage('Email not found.')
               }
               if(data.message == 'wrong password'){
                 return setErrorMessage('Password not found.')
               }
-        
-              if(data.data.role != 'admin'){
-                return setErrorMessage('This account is not authorized to use.')
-              }
-              if(data.message == 'success' && data.data.role == 'admin'){
-                console.log('Login Success');
+              if(data.data.role === 'staff' || data.data.role === 'admin'){
+               
                 setAuthUser(data.data);
                 navigate('/')
+              }
+              else{
+                return setErrorMessage('This account is not authorized to use.')
               }
             }).catch((error) => {
               console.error('Error logging in:', error);

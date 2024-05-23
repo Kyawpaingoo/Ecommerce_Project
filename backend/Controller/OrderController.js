@@ -11,19 +11,29 @@ export const store = async(req ,res)=>{
 
     orderData.code = orderCode;
     orderData.status = 'packing';
-
-    const orderResult = await OrderModel.create(orderData);
-
-    const orderDetailsWithID =[];
+    
+    let totalPrice = 0;
     for(const orderDetail of orderDetailData){
         const product = await ProductModel.findById(orderDetail.product);
-        const totalPrice = product.price * orderDetail.qty;
-        orderDetailsWithID.push({
-            ...orderDetail,
+       
+        totalPrice += product.price * orderDetail.qty;
+    }
+    orderData.subTotalPrice = totalPrice
+    
+    const orderResult = await OrderModel.create(orderData);
+
+    const orderDetailsWithID = await Promise.all(orderDetailData.map((async (data)=>{
+        const product = await ProductModel.findById(data.product);
+
+        const totalPrice = product.price * data.qty;
+        return {
+            ...data,
             order_id: orderResult._id,
             price: totalPrice
-        })
-    }
+        }
+    }))
+    )
+    
 
     const orderDetailResult = await OrderDetailModel.create(orderDetailsWithID);
 

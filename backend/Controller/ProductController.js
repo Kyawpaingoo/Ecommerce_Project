@@ -5,26 +5,23 @@ import { errorJson, successJson } from "./Utilits/JsonRes.js";
 
 export const store = async(req, res)=>{
     const {files, body} = req;
-    //console.log(req.files);
-    
     const fileName = files.image.name;
     const filePath = 'Public/Images/' + fileName;
     files.image.mv(filePath, (err)=>{
         console.log(err);
     });
-
+    
     //console.log(filePath);
 
     // const reqColor = JSON.parse(body.color)
-    console.log(body.color);
+    //console.log(body.color);
     
-    let reqColor = [];
-    reqColor = reqColor.concat(body.color);
+    const reqColor = JSON.parse(body.color);
     const colorQuery = [];
-    console.log(reqColor);
-
+    //console.log(reqColor);
+    
     reqColor.map((d)=>{
-        colorQuery.push({slug: d});
+        colorQuery.push({_id: d});
     })
     
     //console.log(colorQuery);
@@ -34,8 +31,9 @@ export const store = async(req, res)=>{
         $or: colorQuery
     });
 
-    // console.log(dataColor);
-    
+    //console.log(dataColor);
+
+
     const result = await ProductModel.create({
         name: body.name,
         image: fileName,

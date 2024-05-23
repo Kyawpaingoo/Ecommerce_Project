@@ -1,6 +1,6 @@
-import { AppBar, Badge, Box, MenuItem, Container, CssBaseline, Divider, Drawer, IconButton, ListItemIcon, ListItemText, ThemeProvider, Toolbar, Typography, createTheme, Menu, Tooltip, List, ListItem } from '@mui/material';
+import { AppBar, Badge, Box, MenuItem, Container, CssBaseline, Divider, Drawer, IconButton, ListItemIcon, ListItemText, ThemeProvider, Toolbar, Typography, createTheme, Menu, Tooltip, List } from '@mui/material';
 import { Inbox, Notifications, Person, Settings } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import axios from 'axios';
@@ -11,6 +11,7 @@ const DashboardLayout = (props) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { authUser, setAuthUser } = useContext(AuthContext);
 
+  const navigate = useNavigate();
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -23,6 +24,7 @@ const DashboardLayout = (props) => {
     await axios.post('/logout').then((data) => {
       if (data.data === 'success') {
         setAuthUser(false);
+        navigate('/login');
       }
     });
   };
@@ -85,30 +87,44 @@ const DashboardLayout = (props) => {
           <Toolbar />
           <Divider />
           <List>
-            <MenuItem component={Link} to="/" sx={{marginY: 2}}>
-              <ListItemIcon>
-                <Inbox />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </MenuItem>
-            <MenuItem component={Link} to="/customers" sx={{marginY: 2}}>
-              <ListItemIcon>
-                <Inbox />
-              </ListItemIcon>
-              <ListItemText primary="Customers" />
-            </MenuItem>
-            <MenuItem component={Link} to="/product" sx={{marginY: 2}}>
-              <ListItemIcon>
-                <Inbox />
-              </ListItemIcon>
-              <ListItemText primary="Products" />
-            </MenuItem>
-            <MenuItem component={Link} to="/order" sx={{marginY: 2}}>
-              <ListItemIcon>
-                <Inbox />
-              </ListItemIcon>
-              <ListItemText primary="Orders" />
-            </MenuItem>
+          <MenuItem component={Link} to="/" sx={{marginY: 2}}>
+            <ListItemIcon>
+              <Inbox />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </MenuItem>
+            {
+              authUser.role == 'staff' && (
+                <MenuItem component={Link} to="/product" sx={{marginY: 2}}>
+                  <ListItemIcon>
+                    <Inbox />
+                  </ListItemIcon>
+                  <ListItemText primary="Products" />
+                </MenuItem>
+              )
+            }
+
+            {
+              authUser.role == 'admin' && (
+                <>
+                  
+                  <MenuItem component={Link} to="/customer" sx={{marginY: 2}}>
+                    <ListItemIcon>
+                      <Inbox />
+                    </ListItemIcon>
+                    <ListItemText primary="Staffs" />
+                  </MenuItem>
+                  
+                  <MenuItem component={Link} to="/order" sx={{marginY: 2}}>
+                    <ListItemIcon>
+                      <Inbox />
+                    </ListItemIcon>
+                    <ListItemText primary="Orders" />
+                  </MenuItem>
+                </>
+              )
+            }
+            
           </List>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, overflow: 'auto' }}>

@@ -49,7 +49,7 @@ const ProductList = () => {
         {
             message && (
                 <Box sx={{width: '100%', marginY: 2, backgroundColor: '#00e676'}} display={'flex'}>
-                    <Typography paddingY={1} paddingLeft={2} color={'white'}>Product Message</Typography>
+                    <Typography paddingY={1} paddingLeft={2} color={'white'}>{message}</Typography>
                     <IconButton onClick={closeMessage} sx={{marginLeft:'auto'}}>
                         <CloseIcon sx={{color: 'white'}}  />
                     </IconButton>

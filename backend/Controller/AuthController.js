@@ -70,7 +70,7 @@ const generateAccessToken = (payload) =>{
     return access_token;
 }
 
-export const checkAuth = (req, res, next)=>{
+export const checkAuth = (req, res)=>{
     const {access_token} = req.cookies;
     const jwt_secrect = process.env.JWT_TOKEN;
     

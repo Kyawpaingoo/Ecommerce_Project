@@ -12,6 +12,7 @@ import DataRouter from './Router/DateRouter.js';
 import ProductRouter from './Router/ProductRouter.js';
 import OrderRouter from './Router/OrderRouter.js';
 import OrderDetailRouter from './Router/OrderDetailRouter.js';
+import AnalyticsRouter from './Router/AnalyticsRouter.js';
 
 dotenv.config();
 const app = express();
@@ -48,6 +49,7 @@ app.use('/api/data', DataRouter);
 app.use('/api/product', ProductRouter);
 app.use('/api/order', OrderRouter);
 app.use('/api/orderDetail', OrderDetailRouter);
+app.use('/api/analytic/', AnalyticsRouter)
 app.listen(port, ()=>{
     console.log(`server is running on port: ${port}`);
 });

@@ -1,10 +1,11 @@
 import DashboardLayout from '../Layout/DashboardLayout.jsx'
 import {styled} from '@mui/material/styles'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import {Box, Button, TextField, Grid, Typography, Paper, InputLabel, Select, MenuItem, FormControl} from '@mui/material';
+import {Box, Button, TextField, IconButton, Grid, Typography, Paper, InputLabel, Select, MenuItem, FormControl} from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import host from '../../Data/Data..js';
+import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -20,18 +21,21 @@ const VisuallyHiddenInput = styled('input')({
 
 const ProductCreate = () => {
   const [price, setPrice] = useState('');
+  const [stock, setStock] = useState('');
   const [name, setName] = useState('');
-  const [image, setImage] = useState([]);
-  const [selectedImage, setSelectedImage] = useState([]);
+  const [image, setImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState("");
   const [brand, setBrand] = useState([]);
   const [category, setCategory] = useState([]);
   const [colors, setColors] = useState([]);
   const [gender, setGender] = useState([]);
-  const [selectedgender, setSelectedGender] = useState([]);
-  const [selectedbrand, setSelectedBrand] = useState([]);
-  const [selectedcategory, setSelectedCategory] = useState([]);
-  const [selectedcolor, setSelectedColor] = useState([]);
+  const [selectedgender, setSelectedGender] = useState('');
+  const [selectedbrand, setSelectedBrand] = useState('');
+  const [selectedcategory, setSelectedCategory] = useState('');
+  const [selectedColor, setSelectedColor] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [errMessage, setErrMessage] = useState('');
+  const navigate = useNavigate();
 
   useEffect(()=>{
     let isApiSubscribed = true;
@@ -42,8 +46,7 @@ const ProductCreate = () => {
           setBrand(d.data.brand);
           setCategory(d.data.category);
           setGender(d.data.gender);
-          setColors(d.data.colors);
-         
+          setColors(d.data.colors);     
         }
       })
     }
@@ -53,6 +56,28 @@ const ProductCreate = () => {
   }
   },[])
 
+  const store = async()=>{
+    var formData = new FormData();
+    formData.append('name', name);
+    formData.append('image', image);
+    formData.append('price', price);
+    formData.append('stock', stock)
+    formData.append('brand', selectedbrand);
+    formData.append('category', selectedcategory);
+    formData.append('color', JSON.stringify(selectedColor));
+    formData.append('gender', selectedgender);
+
+    //console.log(formData);
+    await axios.post('/product/store', formData).then((d)=>{
+        if(d.data.message === 'success'){
+          navigate('/product');
+        }
+        else{
+          setErrMessage('Product Create Failed!');
+        }
+    })
+  }
+
   const handleFile = (event)=>{
       const file = event.target.files[0];
       if(file){
@@ -61,16 +86,29 @@ const ProductCreate = () => {
           setSelectedImage(e.target.result);
         }
         reader.readAsDataURL(file);
-        console.log(file)
+        setImage(file);
       } else{
         console.log('no file')
-      }
-      
+      }    
   }
+
+  const closeMessage = ()=>{
+    setErrMessage('');
+}
   return (
     <DashboardLayout>
-      <Grid container component={Paper} spacing={1} sx={{ width:'120vh', marginX: 25, paddingX: 4, paddingY:  2, marginY: 5}} elevation={6} square>
+      <Grid container component={Paper} spacing={4} sx={{ width:'120vh', marginX: 25, marginY: 5, paddingBottom: 4}} elevation={6} square>
         <Grid item md={12}>
+        {
+            errMessage && (
+                <Box sx={{width: '100%', marginY: 2, backgroundColor: '#00e676'}} display={'flex'}>
+                    <Typography paddingY={1} paddingLeft={2} color={'white'}>{errMessage}</Typography>
+                    <IconButton onClick={closeMessage} sx={{marginLeft:'auto'}}>
+                        <CloseIcon sx={{color: 'white'}}  />
+                    </IconButton>
+                </Box>
+            )
+        }
         <Box>
           <Typography variant='h4' marginBottom={2}>Product Create Form</Typography>
         </Box>
@@ -83,22 +121,23 @@ const ProductCreate = () => {
             variant='contained'
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
+            fullWidth
             >
             Upload File
             <VisuallyHiddenInput type='file' onChange={handleFile} />
             </Button>
             {
                 selectedImage && (
-                  <img src={selectedImage} style={{width: 75, height: 75, objectFit:'cover'}} />
+                  <img src={selectedImage} style={{width: 275, height: 275, objectFit:'cover', marginTop: 10}} />
                 )
             }
         </Grid>
         <Grid item xs={12} sm={8} md={8}>
           <Box component='form'>
             <TextField
-              onChange={e=>setName(e.target.value)}
+              onChange={(e)=>setName(e.target.value)}
               required
-              fullWidth
+              sx={{width: 550, minWidth: 350}}
               id="name"
               label="Product Name"
               name="name"
@@ -106,11 +145,10 @@ const ProductCreate = () => {
               autoFocus/> 
               
               <TextField
-              onChange={e=>setPrice(e.target.value)}
-              fullWidth
+              onChange={(e)=>setPrice(e.target.value)}
               required
               label="Price"
-              sx={{mt: 2}}
+              sx={{mt: 2, width: 550, minWidth: 350}}
               name='price'
               autoFocus
               id='price'
@@ -118,11 +156,10 @@ const ProductCreate = () => {
               autoComplete='price'
             />
             <TextField
-              onChange={e=>setPrice(e.target.value)}
-              fullWidth
+              onChange={(e)=>setStock(e.target.value)}
               required
               label="Stock"
-              sx={{mt: 2}}
+              sx={{mt: 2, width: 550, minWidth: 350}}
               name='stock'
               autoFocus
               id='stock'
@@ -141,7 +178,7 @@ const ProductCreate = () => {
                   {
                     gender != null && 
                     gender.map((d)=>(
-                      <MenuItem key={d._id} value={d._id}>
+                      <MenuItem key={d._id} value={d.gender}>
                         {d.gender}
                       </MenuItem>
                     ))
@@ -159,7 +196,7 @@ const ProductCreate = () => {
                 {
                   brand != null && 
                   brand.map((d)=>(
-                    <MenuItem key={d._id} value={d._id}>
+                    <MenuItem key={d._id} value={d.brand}>
                       {d.brand}
                     </MenuItem>
                   ))
@@ -177,7 +214,7 @@ const ProductCreate = () => {
                 {
                   category != null && 
                   category.map((d)=>(
-                    <MenuItem key={d._id} value={d._id}>
+                    <MenuItem key={d._id} value={d.category}>
                       {d.category}
                     </MenuItem>
                   ))
@@ -189,7 +226,7 @@ const ProductCreate = () => {
                 <InputLabel id="color">Color</InputLabel>
                 <Select
                   id="color"
-                  value={selectedcolor}
+                  value={selectedColor}
                   multiple
                   label="color"
                   onChange={(event)=>setSelectedColor(event.target.value)}
@@ -205,7 +242,7 @@ const ProductCreate = () => {
                 </Select>
             </FormControl>
               <Box sx={{ marginTop: 2}}>
-                <Button variant='contained' color='success' sx={{marginRight: 2}}>Create</Button>
+                <Button onClick={store} variant='contained' color='success' sx={{marginRight: 2}}>Create</Button>
                 <Button variant='contained' color='error'>Cancel</Button>
               </Box>
           </Box>

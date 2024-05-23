@@ -21,7 +21,7 @@ const OrderDetail = () => {
       const data = response.data;
       setOrderDetail(data);
 
-      const subTotal = data.reduce((sum, item)=> sum + item.price  * item.qty, 0);
+      const subTotal = data.length >= 2 ? data.reduce((sum, item)=> sum + item.price  * item.qty, 0) : data[0].price;
       const total = subTotal + tax + shippingFees;
       setSubTotalPrice(subTotal);
       setTotalPrice(total);
