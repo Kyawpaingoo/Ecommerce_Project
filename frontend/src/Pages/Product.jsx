@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import MainLayout from './Layout/MainLayout.jsx'
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Container, FormControl, Grid, InputLabel, OutlinedInput, Select, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Container, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select, Typography } from '@mui/material'
 import axios from 'axios';
 import { useSearchParams, Link } from 'react-router-dom';
 import PageLoader from '../Components/PageLoader.jsx';
@@ -21,7 +21,7 @@ const Product = () => {
     const [loader ,setLoader] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState('');
-    const [genders, setGenders] = useState('');
+    const [genders, setGenders] = useState([]);
     const [categories, setCategoreis] = useState([]);
     const [brands, setBrands] = useState([]);
     const [colors, setColors] = useState([]);
@@ -113,7 +113,12 @@ const Product = () => {
                         input={<OutlinedInput  label='Gender' />}
                         MenuProps={MenuProps}
                     >
-
+                        {
+                            genders.map((gender)=>(
+                                <MenuItem key={gender._id} value={gender._id}>{gender.gender}</MenuItem>
+                            ))
+                        }
+                        
                     </Select>
                 </FormControl>
 
@@ -127,7 +132,11 @@ const Product = () => {
                         input={<OutlinedInput  label='Category' />}
                         MenuProps={MenuProps}
                     >
-
+                        {
+                            categories.map((category)=>(
+                                <MenuItem key={category._id} value={category._id}>{category.category}</MenuItem>
+                            ))
+                        }
                     </Select>
                 </FormControl>
 
@@ -141,7 +150,11 @@ const Product = () => {
                         input={<OutlinedInput  label='Brand' />}
                         MenuProps={MenuProps}
                     >
-
+                        {
+                            brands.map((brand)=>(
+                                <MenuItem key={brand._id} value={brand._id}>{brand.brand}</MenuItem>
+                            ))
+                        }
                     </Select>
                 </FormControl>
             </Box>

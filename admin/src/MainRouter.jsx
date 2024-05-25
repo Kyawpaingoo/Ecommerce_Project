@@ -10,6 +10,7 @@ import UserList from './Pages/User/UserList.jsx';
 import RedirectAuth from './Pages/RouteMiddlewares/RedirectAuth.jsx';
 import RedirectNotStaff from './Pages/RouteMiddlewares/RedirectNoStatff.jsx';
 import RedirectNotAdmin from './Pages/RouteMiddlewares/RedirectNotAdmin.jsx';
+import ProductEdit from './Pages/Product/ProductEdit.jsx';
 
 const MainRouter = () => {
     return(
@@ -40,6 +41,13 @@ const MainRouter = () => {
                         <UserList />
                     </RedirectNotAdmin>
                 }/>
+                <Route 
+                    path='product/edit/:id' element={
+                        <RedirectNotStaff>
+                            <ProductEdit />
+                        </RedirectNotStaff>
+                    }
+                />
                 <Route path='order' element={
                     <RedirectNotAdmin>
                          <OrderList />

@@ -46,7 +46,7 @@ export const store = async(req, res)=>{
         category: body.category
     });
 
-    res.json(successJson('success', result));
+    res.json('success');
 }
 
 export const all = async (req, res) =>{
@@ -110,12 +110,12 @@ export const update = async(req, res)=>{
             console.log(fileName);
         }
     
-        const reqColor = body.color
+        const reqColor = JSON.parse(body.color);
         const colorQuery = [];
         console.log(reqColor);
     
         await reqColor.map((d)=>{
-            colorQuery.push({slug: d});
+            colorQuery.push({_id: d});
         })
         
         //console.log(colorQuery);   
@@ -140,7 +140,7 @@ export const update = async(req, res)=>{
         });
     
         console.log(fileName);
-        res.json({fileName, result});
+        res.json('success');
     }
     catch(err){
         console.log(err)

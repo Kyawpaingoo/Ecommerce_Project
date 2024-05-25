@@ -4,8 +4,9 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {Box, Button, TextField, IconButton, Grid, Typography, Paper, InputLabel, Select, MenuItem, FormControl} from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
+import data from '../../Data/Data..js';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -19,7 +20,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const ProductCreate = () => {
+const ProductEdit = () => {
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
   const [name, setName] = useState('');
@@ -35,28 +36,64 @@ const ProductCreate = () => {
   const [selectedColor, setSelectedColor] = useState([]);
   const [loader, setLoader] = useState(true);
   const [errMessage, setErrMessage] = useState('');
+  const {id} = useParams();
   const navigate = useNavigate();
 
   useEffect(()=>{
     let isApiSubscribed = true;
-    const getData = async()=>{
-      await axios.get('/data/get-filter-data').then((d)=>{
-        if(isApiSubscribed){
-          setLoader(false);
-          setBrand(d.data.brand);
-          setCategory(d.data.category);
-          setGender(d.data.gender);
-          setColors(d.data.colors);     
-        }
-      })
+    
+    if(isApiSubscribed){
+        getData();
     }
-    getData();
+    
     return ()=>{
       isApiSubscribed = false;
   }
   },[])
 
-  const store = async()=>{
+  const getData = async()=>{
+    const filterDataRequest = await axios.get('/data/get-filter-data');
+    const productRequest = await axios.get('/product/edit/'+id);
+
+    Promise.all([filterDataRequest, productRequest]).then((res)=>{
+        const filterData = res[0].data;
+        const productData = res[1].data;
+
+        setBrand(filterData.brand);
+        setCategory(filterData.category);
+        setGender(filterData.gender);
+        setColors(filterData.colors);
+
+        setName(productData.name);
+        setPrice(productData.price);
+        setStock(productData.stock);
+        setSelectedBrand(productData.brand);
+        setSelectedCategory(productData.category);
+        setSelectedGender(productData.gender);
+        setSelectedColor(productData.color.map(color => color._id));
+        setSelectedImage(productData.image)
+        //console.log(filterData);
+        // console.log(productData);
+
+        console.log(selectedColor)
+    })
+  }
+
+//   const dbColors = ()=>{
+//     const data = [];
+//     colors.forEach(color => {
+//         selectedColor.forEach(selColor => {
+//             if(selColor._id === color._id){
+//                 data.push(selColor._id);
+//             }
+//         })
+//     })
+//     console.log(data)
+//     setSelectedColor(data)
+//     return data;
+//   } 
+
+  const update = async()=>{
     var formData = new FormData();
     formData.append('name', name);
     formData.append('image', image);
@@ -68,8 +105,9 @@ const ProductCreate = () => {
     formData.append('gender', selectedgender);
 
     //console.log(formData);
-    await axios.post('/product/store', formData).then((d)=>{
-        if(d.data === 'success'){
+    await axios.post('/product/update/'+id, formData).then((d)=>{
+        
+        if(d.data=== 'success'){
           navigate('/product');
         }
         else{
@@ -80,6 +118,7 @@ const ProductCreate = () => {
 
   const handleFile = (event)=>{
       const file = event.target.files[0];
+      console.log(file)
       if(file){
         const reader = new FileReader();
         reader.onload = (e)=>{
@@ -110,7 +149,7 @@ const ProductCreate = () => {
             )
         }
         <Box>
-          <Typography variant='h4' marginBottom={2}>Product Create Form</Typography>
+          <Typography variant='h4' marginBottom={2}>Product Edit Form</Typography>
         </Box>
         </Grid>
         
@@ -128,13 +167,14 @@ const ProductCreate = () => {
             </Button>
             {
                 selectedImage && (
-                  <img src={selectedImage} style={{width: 275, height: 275, objectFit:'cover', marginTop: 10}} />
+                  <img src={selectedImage.includes('data:image') ? selectedImage : `${data.host}/images/${selectedImage}`} style={{width: 275, height: 275, objectFit:'cover', marginTop: 10}} />
                 )
             }
         </Grid>
         <Grid item xs={12} sm={8} md={8}>
           <Box component='form'>
             <TextField
+              value={name}
               onChange={(e)=>setName(e.target.value)}
               required
               sx={{width: 550, minWidth: 350}}
@@ -144,7 +184,8 @@ const ProductCreate = () => {
               autoComplete="name"
               autoFocus/> 
               
-              <TextField
+            <TextField
+              value={price}
               onChange={(e)=>setPrice(e.target.value)}
               required
               label="Price"
@@ -156,6 +197,7 @@ const ProductCreate = () => {
               autoComplete='price'
             />
             <TextField
+              value={stock}
               onChange={(e)=>setStock(e.target.value)}
               required
               label="Stock"
@@ -170,6 +212,7 @@ const ProductCreate = () => {
               <FormControl sx={{minWidth: 120, mr:2}}>
                 <InputLabel id="gender">Gender</InputLabel>
                 <Select
+                defaultValue={selectedgender}
                   id="gender"
                   value={selectedgender}
                   label="Gender"
@@ -223,26 +266,32 @@ const ProductCreate = () => {
             </FormControl>
             </Box>
             <FormControl sx={{ mt: 1, width: 300 }}>
-                <InputLabel id="color">Color</InputLabel>
-                <Select
-                  id="color"
-                  value={selectedColor}
-                  multiple
-                  label="color"
-                  onChange={(event)=>setSelectedColor(event.target.value)}
-                >
-                    {
-                      colors != null && 
-                      colors.map((d)=>(
-                        <MenuItem key={d._id} value={d._id}>
-                          {d.color}
-                        </MenuItem>
-                      ))
-                    }
-                </Select>
+                {
+                    selectedColor.length > 0 && (
+                        <>
+                            <InputLabel id="color">Color</InputLabel>
+                            <Select
+                            id="color"
+                            value={selectedColor}
+                            multiple
+                            label="color"
+                            onChange={(event)=>setSelectedColor(event.target.value)}
+                            >
+                                {
+                                colors != null && 
+                                colors.map((d)=>(
+                                    <MenuItem key={d._id} value={d._id}>
+                                    {d.color}
+                                    </MenuItem>
+                                ))
+                                }
+                            </Select>       
+                        </>
+                    )
+                }
             </FormControl>
               <Box sx={{ marginTop: 2}}>
-                <Button onClick={store} variant='contained' color='success' sx={{marginRight: 2}}>Create</Button>
+                <Button onClick={update} variant='contained' color='success' sx={{marginRight: 2}}>Create</Button>
                 <Button variant='contained' color='error'>Cancel</Button>
               </Box>
           </Box>
@@ -252,4 +301,4 @@ const ProductCreate = () => {
   )
 }
 
-export default ProductCreate
+export default ProductEdit

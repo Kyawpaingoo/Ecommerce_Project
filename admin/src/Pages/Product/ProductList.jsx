@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import host from '../../Data/Data..js';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 
 const ProductList = () => {
@@ -16,6 +16,7 @@ const ProductList = () => {
     const [totalPage, setTotalPage] = useState(null);
     const [count, setCount] = useState(0);
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
     useEffect(()=>{
         const fetchData = async()=>{
             await axios.get('/product/all').then((d)=>{
@@ -29,10 +30,14 @@ const ProductList = () => {
 
     const destroy = async (id)=>{
         await axios.post(`/product/destroy/${id}`).then((d)=>{
-            if(d.data == 'success'){
+            if(d.data === 'success'){
                 setMessage('Product Deleted.');
             }
         })
+    }
+
+    const edit = async(id)=>{
+        navigate(`/product/edit/${id}`);
     }
 
     const closeMessage = ()=>{
@@ -109,7 +114,7 @@ const ProductList = () => {
                                 
                                 <TableCell>
                                     <Stack direction={'row'} spacing={2}>
-                                        <Button variant='contained' endIcon={<EditIcon />}>Edit</Button>
+                                        <Button onClick={()=>edit(d._id)} variant='contained' endIcon={<EditIcon />}>Edit</Button>
                                         <Button onClick={()=>destroy(d._id)} variant="contained" endIcon={<DeleteIcon />} color='error'>
                                             Delete
                                         </Button>
