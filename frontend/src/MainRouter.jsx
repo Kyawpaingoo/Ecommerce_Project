@@ -7,6 +7,7 @@ import Review from './Pages/Review.jsx'
 import Contact from './Pages/Contact.jsx'
 import Product from './Pages/Product.jsx'
 import ProductDetail from './Pages/ProductDetail.jsx'
+import Order from './Pages/Orders/Order.jsx'
 const MainRouter = () => {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ const MainRouter = () => {
               <Route path='/Review' element={<Review />} />
               <Route path='/Contact' element={<Contact />} />
               <Route path='/productDetail/:id' element={<ProductDetail />} />
+              <Route path='/order/:id' element={<Order />} />
           </Routes>
       </AuthContextProvider>
     </BrowserRouter>

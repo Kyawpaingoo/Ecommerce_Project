@@ -36,8 +36,7 @@ const ProductDetail = () => {
                                         <Typography component='div' variant='h3'>{product.name}</Typography>
                                         <Typography variant='h6' sx={{paddingTop: 1}}>Price: ${product.stock}</Typography>
                                         <Box sx={{display: 'flex', marginY: 2}}>
-                                            <Button variant='outlined' size='large' sx={{marginRight: 1}}>Add to Cart</Button>
-                                            <Button component={Link} to={'/'} variant='outlined' size='large'  sx={{marginRight: 1}}>Buy Now</Button>
+                                            <Button component={Link} to={`/order/${product._id}`} variant='outlined' size='large'  sx={{marginRight: 1}}>Buy Now</Button>
                                             <IconButton variant='outlined' color='error'>
                                                 <FavoriteIcon />
                                             </IconButton>

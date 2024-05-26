@@ -33,51 +33,43 @@ const Product = () => {
     const categoryQuery = searchParams.get('category') ?? '';
     const brandQuery = searchParams.get('brand') ?? '';
 
-    const queryStringUrl = `?name=${nameQuery}&gender=${genderQuery}&color=${colors}&category=${categoryQuery}&brand=${brandQuery}`;
+    // const queryStringUrl = `?name=${nameQuery}&gender=${genderQuery}&color=${colors}&category=${categoryQuery}&brand=${brandQuery}`;
 
     useEffect(()=>{
-        let isApiSubscribed = true;
         const getData = async ()=>{
             try{
                 setLoader(true);
                 const filterRequest = await axios.get("/data/get-filter-data");
-                const productRequest = await axios.get("/product/all" + queryStringUrl + `&page=${page}`);
+                const queryStringUrl = `?name=${nameQuery}&gender=${genderQuery}&color=${colors.join(',')}&category=${categoryQuery}&brand=${brandQuery}&page=${page}`;
+                const productRequest = await axios.get("/product/all" + queryStringUrl);
+                //const productRequest = await axios.get("/product/all" + queryStringUrl + `&page=${page}`);
     
                 // const sampleData = await Promise.all([filterRequest, productRequest]);
     
                 //console.log(sampleData);
                 const [filterData, productList] = await Promise.all([filterRequest, productRequest]);
-                if(isApiSubscribed){
+                
                     setGenders(filterData.data.gender);
                     setBrands(filterData.data.brand);
                     setCategoreis(filterData.data.category);
                     setTotalPages(productList.data.totalPages);
+                    setColors(filterData.data.colors)
                     const productData = productList.data.docs;
+                    console.log(productData)
                     setProducts(productData);
-                    
-                    console.log(productList.data);
-                    console.log(products);
                     setLoader(false);
-                }   
                 
             }
             catch(error){
                 console.log("Error fetching data: ", error);
-                if(isApiSubscribed){
-                    setLoader(false);
-                }
-            } finally {
-                if(isApiSubscribed){
-                    setLoader(false);
-                }
-            }
+                setLoader(false);
+               
+            } 
         }
         getData();
-        return ()=>{
-            isApiSubscribed = false;
-        }
-    },[queryStringUrl, page]);
+    },[nameQuery, genderQuery, categoryQuery, brandQuery, page]);
 
+    
 
     const handleGenderChange = (event) =>{
         const {target: {value}} = event;
@@ -157,6 +149,24 @@ const Product = () => {
                         }
                     </Select>
                 </FormControl>
+
+                <FormControl sx={{ m:1, width: 100}} size='small'>
+                    <InputLabel id="multiple-color-label">Color</InputLabel>
+                    <Select
+                        labelId='multiple-color-label'
+                        multiple
+                        value={colors}
+                        onChange={handleBrandChange}
+                        input={<OutlinedInput  label='Color' />}
+                        MenuProps={MenuProps}
+                    >
+                        {
+                            colors.map((color)=>(
+                                <MenuItem key={color._id} value={color._id}>{color.color}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
             </Box>
 
             <Grid container columns={{sx: 4, md: 12}} spacing={2} sx={{marginY:3}}>
@@ -164,7 +174,7 @@ const Product = () => {
                     loader ? (
                         <PageLoader />
                     ) : (
-                        products.length > 0 ? (
+                        products != null && products.length > 0 ? (
                             products.map((data)=>(
                                 <Grid key={data._id} item md={4} xs={6}>
                                     <Card>
@@ -178,12 +188,7 @@ const Product = () => {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            <Button size='small'>
-                                                <Typography  sx={{display:{xs: 'none', md: 'inline'}}}>
-                                                Add to Cart
-                                                </Typography>
-                                            </Button>
-                                            <Button size='small'>
+                                            <Button size='small' component={Link} to={`/order/${data._id}`}>
                                             <Typography  sx={{display:{xs: 'none', md: 'inline'}}}>
                                                 Buy Now
                                                 </Typography>
