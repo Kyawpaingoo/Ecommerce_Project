@@ -19,7 +19,7 @@ const NavbarComponent = () => {
     //   navigate(`/${page}`);
     // }
 
-    console.log(authUser)
+    
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -162,15 +162,8 @@ const NavbarComponent = () => {
                   >
                     <MenuItem>
                       <Typography textAlign='center'>
-                        <Link onClick={logout} style={{textDecoration: 'none', color: 'black'}}>
+                        <Link to={'/myorder'} style={{textDecoration: 'none', color: 'black'}}>
                           My Order
-                        </Link>
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem>
-                      <Typography textAlign='center'>
-                      <Link onClick={logout} style={{textDecoration: 'none', color: 'black'}}>
-                          WishList
                         </Link>
                       </Typography>
                     </MenuItem>

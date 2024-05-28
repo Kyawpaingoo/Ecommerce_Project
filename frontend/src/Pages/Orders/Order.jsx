@@ -3,15 +3,17 @@ import MainLayout from '../Layout/MainLayout.jsx'
 import OrderList from './OrderList.jsx'
 import ShippingAddress from './ShippingAddress.jsx'
 import Checkout from './Checkout.jsx'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import AuthContext from '../../Context/AuthContext.jsx'
 
 const steps = ['Order', 'Shipping Info', 'Checkout'];
 
 const Order = () => {
   const [orderInfo, setOrderInfo] = useState({});
   const [activeStep, setActiveStep] = useState(0);
+  const {authUser} = useContext(AuthContext);
   const param = useParams();
   const navigate = useNavigate();
 
@@ -64,7 +66,7 @@ const Order = () => {
       const formData = {
         orderData: {
           code: '',
-          user: '663b387348c3bea755cfe2c7',
+          user: authUser.id,
           subTotalPrice: '',
           shipping_address: `${orderInfo.shippingAddress.address},${orderInfo.shippingAddress.city}, ${orderInfo.shippingAddress.state},${orderInfo.shippingAddress.country}`,
           status: '',

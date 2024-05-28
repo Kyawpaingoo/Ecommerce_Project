@@ -12,6 +12,8 @@ import RedirectAuth from './Pages/RouteMiddleware/RedirectAuth.jsx'
 import RedirectNotAuth from './Pages/RouteMiddleware/RedirectNotAuth.jsx'
 import { useEffect } from 'react'
 import Complete from './Pages/Orders/Complete.jsx'
+import MyOrderList from './Pages/MyOrderList.jsx'
+import MyOrderDetail from './Pages/MyOrderDetail.jsx'
 const MainRouter = () => {
   useEffect(()=>{}, []);
   return (
@@ -35,6 +37,8 @@ const MainRouter = () => {
                 </RedirectNotAuth>
                 } />
                 <Route path='/complete' element={<Complete />} />
+                <Route path='/myorder' element={<MyOrderList />} />
+                <Route path='/orderDetail/:id' element={<MyOrderDetail />} />
           </Routes>
       </AuthContextProvider>
     </BrowserRouter>

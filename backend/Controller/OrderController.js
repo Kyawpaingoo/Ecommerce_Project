@@ -52,9 +52,9 @@ export const getByID = async (req, res)=>{
 }
 
 export const getByUser = async (req, res)=>{
-    const authUser = req.AuthUser;
-    console.log(authUser);
-    const result = await OrderModel.find({user: authUser._id});
+    const id = req.params.id;
+    
+    const result = await OrderModel.find({user: id});
     res.json(result);
 }
 
