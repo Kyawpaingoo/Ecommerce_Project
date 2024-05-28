@@ -6,6 +6,7 @@ import { errorJson, successJson } from "./Utilits/JsonRes.js";
 
 
 export const store = async(req ,res)=>{
+   // console.log(req.body)
     const {orderData, orderDetailData} = req.body;
     const orderCode = generateCode();
 
@@ -20,7 +21,10 @@ export const store = async(req ,res)=>{
     }
     orderData.subTotalPrice = totalPrice
     
+    //console.log(orderData);
     const orderResult = await OrderModel.create(orderData);
+
+    //console.log(orderResult)
 
     const orderDetailsWithID = await Promise.all(orderDetailData.map((async (data)=>{
         const product = await ProductModel.findById(data.product);
@@ -34,10 +38,11 @@ export const store = async(req ,res)=>{
     }))
     )
     
+    console.log(orderDetailsWithID)
 
     const orderDetailResult = await OrderDetailModel.create(orderDetailsWithID);
 
-    res.json({orderResult, orderDetailResult});
+    res.json('success');
 }
 
 export const getByID = async (req, res)=>{

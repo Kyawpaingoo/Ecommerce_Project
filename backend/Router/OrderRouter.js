@@ -4,7 +4,7 @@ import { checkAuth, checkAuthorize } from '../Middleware/CheckAuth.js';
 
 const OrderRouter = express.Router();
 
-OrderRouter.post('/store', checkAuth, checkAuthorize('user'), store);
+OrderRouter.post('/store',store);
 OrderRouter.get('/getbyId/:id', getByID);
 OrderRouter.get('/getbyUser', checkAuth, checkAuthorize('user'), getByUser);
 OrderRouter.get('/all', all);

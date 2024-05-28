@@ -97,9 +97,9 @@ const ShippingAddress = ({updateShippingAddress}) => {
              onChange={handleShippingAddress} 
              margin='normal'
              required
-             id='zipcode'
+             id='zipCode'
              label='Zip/Postal Code'
-             autoComplete='zipcode'
+             autoComplete='zipCode'
              autoFocus
              fullWidth
              value={shippingAddress.zipCode}

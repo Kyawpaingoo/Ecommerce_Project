@@ -4,7 +4,7 @@ import { useContext, useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import AuthContext from '../../Context/AuthContext';
+import AuthContext from '../../Context/AuthContext.jsx';
 
 const pages = ['Product', 'Review', 'Contact'];
 
@@ -19,6 +19,7 @@ const NavbarComponent = () => {
     //   navigate(`/${page}`);
     // }
 
+    console.log(authUser)
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -135,7 +136,7 @@ const NavbarComponent = () => {
             ))}
           
           {
-              authUser ? (
+              authUser && (
                 <MenuItem sx={{flexGrow: 0}}>
                   <Tooltip title="Open Settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -161,27 +162,35 @@ const NavbarComponent = () => {
                   >
                     <MenuItem>
                       <Typography textAlign='center'>
-                        <Link onClick={logout} style={{textDecoration: 'none'}}>
+                        <Link onClick={logout} style={{textDecoration: 'none', color: 'black'}}>
                           My Order
                         </Link>
-                        <Link onClick={logout} style={{textDecoration: 'none'}}>
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem>
+                      <Typography textAlign='center'>
+                      <Link onClick={logout} style={{textDecoration: 'none', color: 'black'}}>
                           WishList
                         </Link>
-                        <Link onClick={logout} style={{textDecoration: 'none'}}>
-                          WishList
-                        </Link>
-                        <Link onClick={logout} style={{textDecoration: 'none'}}>
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem>
+                      <Typography textAlign='center'>
+                      <Link onClick={logout} style={{textDecoration: 'none', color: 'black'}}>
                           Logout
                         </Link>
                       </Typography>
                     </MenuItem>
                   </Menu>
                 </MenuItem>
-              ) : (
-                <MenuItem component={Link} to={"/login"}>
-                    Login
-                </MenuItem>
-              )
+              ) 
+          }
+          {
+            !authUser && (
+              <MenuItem component={Link} to={"/login"}>
+                  Login
+              </MenuItem>
+            )
           }
           </Box>
             </Toolbar>

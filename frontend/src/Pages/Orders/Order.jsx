@@ -4,7 +4,7 @@ import OrderList from './OrderList.jsx'
 import ShippingAddress from './ShippingAddress.jsx'
 import Checkout from './Checkout.jsx'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 const steps = ['Order', 'Shipping Info', 'Checkout'];
@@ -13,6 +13,7 @@ const Order = () => {
   const [orderInfo, setOrderInfo] = useState({});
   const [activeStep, setActiveStep] = useState(0);
   const param = useParams();
+  const navigate = useNavigate();
 
   useEffect(()=>{
     const fetchData = async()=>{
@@ -34,7 +35,7 @@ const Order = () => {
     setOrderInfo(prevState =>{
       const updateOrderDetailData = [...prevState.orderDetailData];
       updateOrderDetailData[index].qty = qty;
-      return {...prevState, updateOrderDetailData}
+      return {...prevState,orderDetailData: updateOrderDetailData}
     })
   };
 
@@ -60,7 +61,29 @@ const Order = () => {
   };
 
   const handleSubmit = async ()=>{
-    console.log('handleSubmit');
+      const formData = {
+        orderData: {
+          code: '',
+          user: '663b387348c3bea755cfe2c7',
+          subTotalPrice: '',
+          shipping_address: `${orderInfo.shippingAddress.address},${orderInfo.shippingAddress.city}, ${orderInfo.shippingAddress.state},${orderInfo.shippingAddress.country}`,
+          status: '',
+        },
+        orderDetailData: orderInfo.orderDetailData.map((product)=>({
+            product: product._id,
+            qty: product.qty,
+        }))
+      }
+
+      await axios.post('/order/store', formData).then((d)=>{
+        if(d.data== 'success'){
+          console.log('success');
+          navigate('/complete')
+        }
+        else{
+          console.log('error')
+        }
+      })
   }
 
   return (
@@ -79,7 +102,7 @@ const Order = () => {
           <Box component={Paper} maxWidth={'50rem'} marginX={25} marginTop={4} paddingY={2} paddingX={4}>
             {activeStep === 0 && <OrderList products={orderInfo.orderDetailData} handleQty={handleQty} />}
             {activeStep === 1 && <ShippingAddress updateShippingAddress={handleShippingAddress} />}
-            {activeStep === 2 && <Checkout />}
+            {activeStep === 2 && <Checkout orderInfo={orderInfo} />}
 
             <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'space-between' }}>
               <Button disabled={activeStep === 0} onClick={handleBack} sx={{ marginRight: 1 }}>

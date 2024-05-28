@@ -9,7 +9,7 @@ export const AuthContextProvider = (props) =>{
     useEffect(()=>{
             axios.get('/checkAuth').then(({data})=>{
                 //console.log(data)
-                if (data === 'not_auth') {
+                if (data === 'not_auth' || !data) {
                     setAuthUser(false); // User is not authenticated
                     console.log(authUser)
                 } else if (data.role === 'staff' || data.role === 'admin') {
