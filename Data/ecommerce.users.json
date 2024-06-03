@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "663b387348c3bea755cfe2c7"
+  },
+  "name": "kenvin",
+  "email": "kenvin@gmail.com",
+  "password": "$2a$10$BHpdwg.rPKmroeashtLynucHjqq5Fn4O9k.BrHHYgI00/HUAZnXNS",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-05-08T08:31:47.989Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-08T08:31:47.989Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "663b4e21c5757f21e75791ba"
+  },
+  "name": "user",
+  "email": "user@gmail.com",
+  "password": "$2a$10$rBx0x1LRxyvBKzoRg/SADONDRuMXeLMy01P5Slgw0spBLYYmibEMC",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2024-05-08T10:04:17.570Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-08T10:04:17.570Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "663de0f1faf7c3aef7498bf7"
+  },
+  "name": "user2",
+  "email": "user2@gmail.com",
+  "password": "$2a$10$nJWM.Txnc8gjUgRIbJNGS.MsbiTCV4PMV3S4AISmzu4ilNgJOBm5K",
+  "role": "staff",
+  "createdAt": {
+    "$date": "2024-05-10T08:55:13.310Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-10T08:55:13.310Z"
+  },
+  "__v": 0
+}]

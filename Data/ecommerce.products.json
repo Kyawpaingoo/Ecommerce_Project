@@ -1,0 +1,424 @@
+[{
+  "_id": {
+    "$oid": "664f586fd252b3d4cf119d4f"
+  },
+  "name": "product one",
+  "image": "luis-felipe-lins-J2-wAQDckus-unsplash.jpg",
+  "price": 300,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641d164815e2c89bc249f2c",
+      "color": "Orange"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "male",
+  "brand": "NIKE",
+  "category": "sport",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664f5880d252b3d4cf119d52"
+  },
+  "name": "product two",
+  "image": "ox-street-BWPqHZBhMVA-unsplash.jpg",
+  "price": 400,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bff0",
+      "color": "Blue"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "male",
+  "brand": "NIKE",
+  "category": "sport",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664f5890d252b3d4cf119d55"
+  },
+  "name": "product three",
+  "image": "daniel-storek-JM-qKEd1GMI-unsplash.jpg",
+  "price": 200,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "male",
+  "brand": "NIKE",
+  "category": "sport",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664f7f6ffb529c4203edf3e2"
+  },
+  "name": "Test Product",
+  "image": "daniel-storek-JM-qKEd1GMI-unsplash.jpg",
+  "price": 400,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfef",
+      "color": "Red"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "Men",
+  "brand": "ERKE",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66598e6a10149784381e1efe"
+  },
+  "name": "Run Star Hike Hi trainers",
+  "image": "IMG_5395.PNG",
+  "price": 110,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfeb",
+      "color": "Black"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "Women",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66598ea010149784381e378b"
+  },
+  "name": "All star hi cherries trainers",
+  "image": "IMG_5396.PNG",
+  "price": 120,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfeb",
+      "color": "Black"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfef",
+      "color": "Red"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "Women",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66598f11a79fb6192ce6b566"
+  },
+  "name": "All star lift hi boho trainers",
+  "image": "IMG_5397.PNG",
+  "price": 85,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfed",
+      "color": "Gray"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "Women",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66598f53a79fb6192ce6b5c7"
+  },
+  "name": "All star city trek trainers",
+  "image": "IMG_5398.PNG",
+  "price": 110,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfeb",
+      "color": "Black"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfed",
+      "color": "Gray"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Men",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66598f84a79fb6192ce6b6d0"
+  },
+  "name": "Pro blaze classic trainers",
+  "image": "IMG_5399.PNG",
+  "price": 80,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfed",
+      "color": "Gray"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Men",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66598fb5a79fb6192ce6b7bb"
+  },
+  "name": "All star construct utility trainers",
+  "image": "IMG_5400.PNG",
+  "price": 85,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfeb",
+      "color": "Black"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Men",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66598feea79fb6192ce6be56"
+  },
+  "name": "All star hi move junior trainers",
+  "image": "IMG_5401.PNG",
+  "price": 30,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641d164815e2c89bc249f2d",
+      "color": "Yellow"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Kids",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66599026a79fb6192ce6bf49"
+  },
+  "name": "All star lo 2v easy-on girls toddler trainers",
+  "image": "IMG_5403.PNG",
+  "price": 20,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bff2",
+      "color": "Pink"
+    }
+  ],
+  "like_count": 0,
+  "stock": 19,
+  "gender": "Kids",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66599063a79fb6192ce6c5fc"
+  },
+  "name": "All star hi 1v dinosaurs boys toddler trainers",
+  "image": "IMG_5404.PNG",
+  "price": 30,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfee",
+      "color": "Navy"
+    }
+  ],
+  "like_count": 0,
+  "stock": 30,
+  "gender": "Men",
+  "brand": "Converse",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6659922854b2993278bd97ac"
+  },
+  "name": "Superstar girls youth trainers",
+  "image": "IMG_5406.PNG",
+  "price": 60,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bff2",
+      "color": "Pink"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Kids",
+  "brand": "Adidas",
+  "category": "Casual",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6659925354b2993278bd9be3"
+  },
+  "name": "Forum low youth trainers",
+  "image": "IMG_5407.PNG",
+  "price": 60,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfeb",
+      "color": "Black"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Kids",
+  "brand": "Adidas",
+  "category": "Casual",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6659927f54b2993278bd9d02"
+  },
+  "name": "Avryn youth trainers",
+  "image": "IMG_5408.PNG",
+  "price": 60,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfee",
+      "color": "Navy"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Kids",
+  "brand": "Adidas",
+  "category": "Casual",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665992b554b2993278bda233"
+  },
+  "name": "Gazelle trainers",
+  "image": "IMG_5409.PNG",
+  "price": 85,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfef",
+      "color": "Red"
+    }
+  ],
+  "like_count": 0,
+  "stock": 20,
+  "gender": "Women",
+  "brand": "Adidas",
+  "category": "Casual",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665992e954b2993278bda568"
+  },
+  "name": "Grand court platform trainers",
+  "image": "IMG_5410.PNG",
+  "price": 80,
+  "color": [
+    {
+      "_id": "6641c5e992d4a0346cc1bfec",
+      "color": "White"
+    },
+    {
+      "_id": "6641c5e992d4a0346cc1bfed",
+      "color": "Gray"
+    }
+  ],
+  "like_count": 0,
+  "stock": 10,
+  "gender": "Women",
+  "brand": "Adidas",
+  "category": "Casual",
+  "__v": 0
+}]

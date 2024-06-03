@@ -5,7 +5,7 @@ import ProductModel from "../Model/ProductModel.js"
 import { errorJson, successJson } from "./Utilits/JsonRes.js";
 
 
-export const store = async(req ,res)=>{
+export const create_Order = async(req ,res)=>{
    // console.log(req.body)
     const {orderData, orderDetailData} = req.body;
     const orderCode = generateCode();
@@ -45,13 +45,13 @@ export const store = async(req ,res)=>{
     res.json('success');
 }
 
-export const getByID = async (req, res)=>{
+export const getOrderByID = async (req, res)=>{
     const id = req.params.id;
     const result = await OrderModel.findById(id);
     res.json(result);
 }
 
-export const getByUser = async (req, res)=>{
+export const getOrderByUser = async (req, res)=>{
     const id = req.params.id;
     
     const result = await OrderModel.find({user: id});
@@ -68,7 +68,7 @@ export const updateOrderStatus = async(req, res)=>{
     res.json(data);
 }
 
-export const all = async(req, res)=>{
+export const getOrderList = async(req, res)=>{
     const{page, code} = req.query;
     const limit = 5;
     const sortField = "_id";

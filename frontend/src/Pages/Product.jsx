@@ -33,7 +33,6 @@ const Product = () => {
     const categoryQuery = searchParams.get('category') ?? '';
     const brandQuery = searchParams.get('brand') ?? '';
 
-    // const queryStringUrl = `?name=${nameQuery}&gender=${genderQuery}&color=${colors}&category=${categoryQuery}&brand=${brandQuery}`;
 
     useEffect(()=>{
         const getData = async ()=>{
@@ -42,11 +41,7 @@ const Product = () => {
                 const filterRequest = await axios.get("/data/get-filter-data");
                 const queryStringUrl = `?name=${nameQuery}&gender=${genderQuery}&color=${colors.join(',')}&category=${categoryQuery}&brand=${brandQuery}&page=${page}`;
                 const productRequest = await axios.get("/product/all" + queryStringUrl);
-                //const productRequest = await axios.get("/product/all" + queryStringUrl + `&page=${page}`);
-    
-                // const sampleData = await Promise.all([filterRequest, productRequest]);
-    
-                //console.log(sampleData);
+                
                 const [filterData, productList] = await Promise.all([filterRequest, productRequest]);
                 
                     setGenders(filterData.data.gender);
@@ -58,18 +53,14 @@ const Product = () => {
                     console.log(productData)
                     setProducts(productData);
                     setLoader(false);
-                
             }
             catch(error){
                 console.log("Error fetching data: ", error);
-                setLoader(false);
-               
+                setLoader(false); 
             } 
         }
         getData();
     },[nameQuery, genderQuery, categoryQuery, brandQuery, page]);
-
-    
 
     const handleGenderChange = (event) =>{
         const {target: {value}} = event;

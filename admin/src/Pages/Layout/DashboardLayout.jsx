@@ -121,6 +121,12 @@ const DashboardLayout = (props) => {
                     </ListItemIcon>
                     <ListItemText primary="Orders" />
                   </MenuItem>
+                  <MenuItem component={Link} to="/review" sx={{marginY: 2}}>
+                    <ListItemIcon>
+                      <Inbox />
+                    </ListItemIcon>
+                    <ListItemText primary="Review" />
+                  </MenuItem>
                 </>
               )
             }

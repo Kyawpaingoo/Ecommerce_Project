@@ -1,17 +1,17 @@
 import express from 'express';
-import { all, destroy, edit, getById, store, update } from '../Controller/ProductController.js';
+import { getProductList, deleteProduct, editProduct, getProductById, createProduct, updateProduct } from '../Controller/ProductController.js';
 import { checkAuth, checkAuthorize } from '../Middleware/CheckAuth.js';
 
 const ProductRouter = express.Router();
 
-ProductRouter.get('/all', all);
-ProductRouter.get('/:id', getById);
+ProductRouter.get('/all', getProductList);
+ProductRouter.get('/:id', getProductById);
 
 //Staff
-ProductRouter.post('/store',checkAuth, checkAuthorize('staff'), store);
-ProductRouter.get("/edit/:id", checkAuth, checkAuthorize('staff'), edit);
-ProductRouter.post('/update/:id', checkAuth, checkAuthorize('staff'), update);
-ProductRouter.post('/destroy/:id', checkAuth, checkAuthorize('staff'), destroy);
+ProductRouter.post('/store',checkAuth, checkAuthorize('staff'), createProduct);
+ProductRouter.get("/edit/:id", checkAuth, checkAuthorize('staff'), editProduct);
+ProductRouter.post('/update/:id', checkAuth, checkAuthorize('staff'), updateProduct);
+ProductRouter.post('/destroy/:id', checkAuth, checkAuthorize('staff'), deleteProduct);
 
 
 

@@ -1,0 +1,88 @@
+[{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bfeb"
+  },
+  "slug": "black",
+  "color": "Black",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bfec"
+  },
+  "slug": "white",
+  "color": "White",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bfef"
+  },
+  "slug": "red",
+  "color": "Red",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bff0"
+  },
+  "slug": "blue",
+  "color": "Blue",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bff1"
+  },
+  "slug": "green",
+  "color": "Green",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bff2"
+  },
+  "slug": "pink",
+  "color": "Pink",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bfed"
+  },
+  "slug": "gray",
+  "color": "Gray",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641c5e992d4a0346cc1bfee"
+  },
+  "slug": "navy",
+  "color": "Navy",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641d164815e2c89bc249f2d"
+  },
+  "slug": "yellow",
+  "color": "Yellow",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641d164815e2c89bc249f2c"
+  },
+  "slug": "orange",
+  "color": "Orange",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641d164815e2c89bc249f2e"
+  },
+  "slug": "purple",
+  "color": "Purple",
+  "__v": 0
+}]

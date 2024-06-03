@@ -14,12 +14,6 @@ const NavbarComponent = () => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const navigate = useNavigate();
 
-    // const redirectPage = (page) =>{
-    //   console.log(page);
-    //   navigate(`/${page}`);
-    // }
-
-    
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -63,7 +57,7 @@ const NavbarComponent = () => {
                         flexGrow: 1
                     }}
                 >
-                Logo
+                IDEL
                 </Typography>
 
                 <Box sx={{flexGrow: 0, display: {xs: 'flex', md:'none'}}}>

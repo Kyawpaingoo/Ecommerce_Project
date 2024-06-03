@@ -72,27 +72,8 @@ const ProductEdit = () => {
         setSelectedGender(productData.gender);
         setSelectedColor(productData.color.map(color => color._id));
         setSelectedImage(productData.image)
-        //console.log(filterData);
-        // console.log(productData);
-
-        console.log(selectedColor)
     })
   }
-
-//   const dbColors = ()=>{
-//     const data = [];
-//     colors.forEach(color => {
-//         selectedColor.forEach(selColor => {
-//             if(selColor._id === color._id){
-//                 data.push(selColor._id);
-//             }
-//         })
-//     })
-//     console.log(data)
-//     setSelectedColor(data)
-//     return data;
-//   } 
-
   const update = async()=>{
     var formData = new FormData();
     formData.append('name', name);
@@ -103,8 +84,6 @@ const ProductEdit = () => {
     formData.append('category', selectedcategory);
     formData.append('color', JSON.stringify(selectedColor));
     formData.append('gender', selectedgender);
-
-    //console.log(formData);
     await axios.post('/product/update/'+id, formData).then((d)=>{
         
         if(d.data=== 'success'){

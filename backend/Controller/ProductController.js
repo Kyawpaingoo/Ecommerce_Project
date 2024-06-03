@@ -3,7 +3,7 @@ import ProductModel from "../Model/ProductModel.js";
 import ColorModel from "../Model/ColorModel.js";
 import { errorJson, successJson } from "./Utilits/JsonRes.js";
 
-export const store = async(req, res)=>{
+export const createProduct = async(req, res)=>{
     const {files, body} = req;
     const fileName = files.image.name;
     const filePath = 'Public/Images/' + fileName;
@@ -11,28 +11,16 @@ export const store = async(req, res)=>{
         console.log(err);
     });
     
-    //console.log(filePath);
-
-    // const reqColor = JSON.parse(body.color)
-    //console.log(body.color);
-    
     const reqColor = JSON.parse(body.color);
     const colorQuery = [];
-    //console.log(reqColor);
     
     reqColor.map((d)=>{
         colorQuery.push({_id: d});
     })
     
-    //console.log(colorQuery);
-    
-    
     const dataColor = await ColorModel.find({
         $or: colorQuery
     });
-
-    //console.log(dataColor);
-
 
     const result = await ProductModel.create({
         name: body.name,
@@ -49,9 +37,9 @@ export const store = async(req, res)=>{
     res.json('success');
 }
 
-export const all = async (req, res) =>{
+export const getProductList = async (req, res) =>{
     const {page, name, gender, category, color, brand} = req.query;
-    const limit  = 5;
+    const limit  = 30;
     const sortField = '_id';
     const sortOrder = -1;
 
@@ -72,27 +60,24 @@ export const all = async (req, res) =>{
     if(brand){
         queryBuilder.push({"brand": brand});
     }
-
-    //console.log(queryBuilder);
-    
     const result = await paginateResult(ProductModel, page, limit, sortField, sortOrder, queryBuilder);
     
     res.json(result);
 }
 
-export const getById = async (req, res) =>{
+export const getProductById = async (req, res) =>{
     const id = req.params.id;
     const result = await ProductModel.findById(id);
     res.json(result);
 }
 
-export const edit = async (req, res)=>{
+export const editProduct = async (req, res)=>{
     const id = req.params.id;
     const result = await ProductModel.findById(id);
     res.json(result);
 }
 
-export const update = async(req, res)=>{
+export const updateProduct = async(req, res)=>{
     const {files, body, params} = req;
     const id = req.params.id;
     console.log(body);
@@ -147,7 +132,7 @@ export const update = async(req, res)=>{
     }
 }
 
-export const destroy = async(req, res)=>{
+export const deleteProduct = async(req, res)=>{
     const id = req.params.id;
     const data = await ProductModel.findById(id);
     if(data != null){

@@ -14,7 +14,7 @@ export const all = async(req, res)=>{
     res.json(result);
 }
 
-export const getByID = async(req, res)=>{
+export const getOrderDetailByID = async(req, res)=>{
     const id = req.params.id;
     const result = await OrderDetailModel.findById(id);
     res.json(result);

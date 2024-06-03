@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffaf"
+  },
+  "slug": "men",
+  "gender": "Men",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb0"
+  },
+  "slug": "women",
+  "gender": "Women",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb1"
+  },
+  "slug": "kids",
+  "gender": "Kids",
+  "__v": 0
+}]

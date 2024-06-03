@@ -32,7 +32,7 @@ const Review =  () => {
     }
   return (
     <MainLayout>
-        <Grid container component="main" sx={{height: '50vh', width:'150vh', marginX: 35, marginY: 5}}>
+        <Grid container component="main" sx={{height: '50vh', width:'150vh', marginX: 35, marginTop: 5, marginBottom:20}}>
             <Grid
                 item
                 xs={false}

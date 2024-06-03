@@ -33,12 +33,8 @@ export const store = async(req, res)=>{
 }
 
 export const all = async(req, res)=>{
-    const {page} = req.query;
-    const limit = 5;
-    const sortField = '_id';
-    const sortOrder = -1;
-
-    const result = await paginateResult(ReviewModel, page, limit, sortField, sortOrder);
+    
+    const result = await ReviewModel.find();
     res.json(result);
 }
 

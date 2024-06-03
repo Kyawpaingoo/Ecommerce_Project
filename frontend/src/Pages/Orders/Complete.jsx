@@ -17,7 +17,7 @@ const Complete = () => {
             <Typography variant='body1' color='text.secondary'>Your order number is <strong>#11111</strong>. We have emailed your order confimration and will update you once its shipped.</Typography>
           </Grid>
           <Grid item sx={{display:'flex', justifyContent:'center'}}>
-            <Button variant='contained' color='success'>
+            <Button component={Link} variant='contained' color='success' to={'/myorder'}>
               View My Order
             </Button>
           </Grid>

@@ -11,6 +11,7 @@ import RedirectAuth from './Pages/RouteMiddlewares/RedirectAuth.jsx';
 import RedirectNotStaff from './Pages/RouteMiddlewares/RedirectNoStatff.jsx';
 import RedirectNotAdmin from './Pages/RouteMiddlewares/RedirectNotAdmin.jsx';
 import ProductEdit from './Pages/Product/ProductEdit.jsx';
+import ReviewList from './Pages/Review/ReviewList.jsx';
 
 const MainRouter = () => {
     return(
@@ -51,6 +52,11 @@ const MainRouter = () => {
                 <Route path='order' element={
                     <RedirectNotAdmin>
                          <OrderList />
+                    </RedirectNotAdmin>
+                } />
+                <Route path='review' element={
+                    <RedirectNotAdmin>
+                         <ReviewList />
                     </RedirectNotAdmin>
                 } />
                 <Route path='orderDetail/:id' element={

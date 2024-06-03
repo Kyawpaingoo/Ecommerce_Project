@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb2"
+  },
+  "slug": "atheltic",
+  "category": "Atheltic",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb5"
+  },
+  "slug": "teen",
+  "category": "Teen",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb3"
+  },
+  "slug": "casual",
+  "category": "Casual",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb4"
+  },
+  "slug": "fashion",
+  "category": "Fashion",
+  "__v": 0
+}]

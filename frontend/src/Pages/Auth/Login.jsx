@@ -53,7 +53,7 @@ const Login = () => {
   };
   return (
     <MainLayout>
-        <Grid container component="main" sx={{height: '50vh', width:'100vh', marginX: 50, marginY: 5}}>
+        <Grid container component="main" sx={{height: '50vh', width:'100vh', marginX: 50, marginTop:5, marginBottom:30}}>
             <Grid
                 item
                 xs={false}

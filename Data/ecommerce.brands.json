@@ -1,0 +1,40 @@
+[{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb6"
+  },
+  "slug": "nike",
+  "brand": "Nike",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb8"
+  },
+  "slug": "erke",
+  "brand": "ERKE",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb9"
+  },
+  "slug": "puma",
+  "brand": "Puma",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffba"
+  },
+  "slug": "converse",
+  "brand": "Converse",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66419a6a66df3c3112f7ffb7"
+  },
+  "slug": "adidas",
+  "brand": "Adidas",
+  "__v": 0
+}]

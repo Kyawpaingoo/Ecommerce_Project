@@ -15,7 +15,7 @@ import Complete from './Pages/Orders/Complete.jsx'
 import MyOrderList from './Pages/MyOrderList.jsx'
 import MyOrderDetail from './Pages/MyOrderDetail.jsx'
 const MainRouter = () => {
-  useEffect(()=>{}, []);
+  useEffect(()=>{}, []);``
   return (
     <BrowserRouter>
       <AuthContextProvider>

@@ -53,7 +53,7 @@ const Register = () => {
   }
   return (
     <MainLayout>
-      <Grid container component="main" sx={{height: '40vh', width:'50vh', marginX: 75, marginY: 5}}>
+      <Grid container component="main" sx={{height: '40vh', width:'50vh', marginX: 75, marginTop: 5, marginBottom: 40}}>
         
         <Box component={Paper}
           sx={{
