@@ -1,3 +1,4 @@
+import React from 'react';
 import { AppBar, Badge, Box, MenuItem, Container, CssBaseline, Divider, Drawer, IconButton, ListItemIcon, ListItemText, ThemeProvider, Toolbar, Typography, createTheme, Menu, Tooltip, List } from '@mui/material';
 import { Inbox, Notifications, Person, Settings } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,12 +8,14 @@ import axios from 'axios';
 
 const defaultTheme = createTheme();
 
-const DashboardLayout = (props) => {
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const { authUser, setAuthUser } = useContext(AuthContext);
-
+const DashboardLayout = (props : any) : React.JSX.Element => {
+  const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
+  const authContext = useContext(AuthContext);
+  //const { authUser, setAuthUser } = authContext;
+  
   const navigate = useNavigate();
-  const handleOpenUserMenu = (event) => {
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
@@ -23,7 +26,7 @@ const DashboardLayout = (props) => {
   const logout = async () => {
     await axios.post('/logout').then((data) => {
       if (data.data === 'success') {
-        setAuthUser(false);
+        authContext.setAuthUser(false);
         navigate('/login');
       }
     });
@@ -48,7 +51,7 @@ const DashboardLayout = (props) => {
                 <Notifications />
               </Badge>
             </IconButton>
-            {!authUser ? (
+            {!authContext.authUser ? (
               <MenuItem component={Link} to="/login">
                 Login
               </MenuItem>
@@ -94,7 +97,7 @@ const DashboardLayout = (props) => {
             <ListItemText primary="Dashboard" />
           </MenuItem>
             {
-              authUser.role == 'staff' && (
+              authContext?.authUser && authContext.authUser.role === 'staff' && (
                 <MenuItem component={Link} to="/product" sx={{marginY: 2}}>
                   <ListItemIcon>
                     <Inbox />
@@ -105,9 +108,8 @@ const DashboardLayout = (props) => {
             }
 
             {
-              authUser.role == 'admin' && (
+              authContext?.authUser && authContext.authUser.role == 'admin' && (
                 <>
-                  
                   <MenuItem component={Link} to="/customer" sx={{marginY: 2}}>
                     <ListItemIcon>
                       <Inbox />

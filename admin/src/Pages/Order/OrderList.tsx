@@ -1,16 +1,24 @@
-import { Chip, IconButton, List, ListItem, ListItemAvatar, Menu, MenuItem, ListItemText, Typography, Avatar } from '@mui/material';
+import React from 'react';
+import { Chip, IconButton, List, ListItem, ListItemAvatar, Menu, MenuItem, ListItemText, Typography, Avatar, ListItemSecondaryAction } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import DashboardLayout from '../Layout/DashboardLayout';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link } from 'react-router-dom';
+import useOrderList from '../../Hooks/useOrderList';
+import { IOrder } from '../../Interface/IOrder';
 
+interface StatusDropdownProps{
+    status: string;
+    orderId: string;
+    onStatusChange: (status: string) => void;
+}
 
-const StatusDropdown = ({status, orderId, onStatusChange}) =>{
-    const [anchorEI, setAncorEl] = useState(null);
+const StatusDropdown : React.FC<StatusDropdownProps> = ({status, orderId, onStatusChange}) =>{
+    const [anchorEI, setAncorEl] = useState<null | HTMLElement>(null);
 
-    const handleClick = (event) =>{
+    const handleClick = (event: React.MouseEvent<HTMLElement>) =>{
         setAncorEl(event.currentTarget);
     }
 
@@ -18,9 +26,8 @@ const StatusDropdown = ({status, orderId, onStatusChange}) =>{
         setAncorEl(null);
     }
 
-    const handleMenuItemClick = async (status) =>{
+    const handleMenuItemClick = async (status: string) =>{
         const response = await axios.post('/order/updateStatus/'+orderId, {status: status});
-
         const updatedData = response.data; 
         onStatusChange(updatedData.status);
         handleClose();
@@ -48,27 +55,20 @@ const StatusDropdown = ({status, orderId, onStatusChange}) =>{
     )
 }
  
-const OrderList = () => {
-    const [orederList, setOrderList] = useState([]);
-    const [page, setPage] = useState(1);
-    const [totalPage, setTotalPage] = useState('');
+const OrderList : React.FC = () => {
+    const urlstring: string = '/order/all'
+    const {orderList, page, totalPage} = useOrderList(urlstring);
+    
+    const [orederListState, setOrderListState] = useState<IOrder[]>(orderList ?? []);
 
     useEffect(()=>{
-        const getData = async ()=>{
-            await axios.get('/order/all').then((d)=>{
-                setOrderList(d.data.docs);
-                setTotalPage(d.data.totalPages)
-            })
-        }
-
-        getData();
-    },[orederList])
-
-    const handleStatusChange = (orderId, newStatus) =>{
+        setOrderListState(orderList ?? []);
+    },[orderList])
+    const handleStatusChange = (orderId : string, newStatus : string) =>{
         
-        setOrderList((prevList)=>{
-            prevList.map((order)=>{
-                order._id == orderId ? {...order, status: newStatus} : order
+        setOrderListState((prevList)=>{
+            return prevList.map((order)=>{
+            return order._id == orderId ? {...order, status: newStatus} : order
             });
         })
     }
@@ -77,23 +77,24 @@ const OrderList = () => {
     <DashboardLayout>
         <List sx={{width: '100%'}}>
             {
-               orederList && orederList.length > 0 ? (
-                    orederList.map((order)=>(
-                        <ListItem key={order._id} sx={{borderBottom: 1}}
-                            secondaryAction={
-                                <IconButton edge='end' LinkComponent={Link} to={`/orderDetail/${order._id}`}>
-                                    <Avatar sx={{bgcolor: 'black'}}>
-                                        <ArrowForwardIosIcon />
-                                    </Avatar>
-                                </IconButton>
-                            }
-                        >
+               orederListState && orederListState.length > 0 ? (
+                    orederListState.map((order)=>(
+                        <ListItem key={order._id} sx={{borderBottom: 1}}>
+                            <ListItemSecondaryAction>
+                                <Link  to={`/orderDetail/${order._id}`}>
+                                    <IconButton edge='end'>
+                                        <Avatar sx={{bgcolor: 'black'}}>
+                                            <ArrowForwardIosIcon />
+                                        </Avatar>
+                                    </IconButton>
+                                </Link>
+                            </ListItemSecondaryAction>
                             <ListItemAvatar>
                                 <Inventory2Icon />
                             </ListItemAvatar>
                             <ListItemText 
                                 primary={order.user}
-                                secondary={order.createdAt}
+                                secondary={order.createdAt.toString()}
                             />
                             <ListItemText>
                                 <Typography variant='h6'>
@@ -102,7 +103,7 @@ const OrderList = () => {
                                 
                             </ListItemText>
                             <ListItemText>
-                                <Typography variant='subtitile1'>
+                                <Typography variant='subtitle1'>
                                 {order.shipping_address}
                                 </Typography>
                                 

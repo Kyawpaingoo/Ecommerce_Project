@@ -1,34 +1,24 @@
-import { useEffect, useState } from 'react'
-import DashboardLayout from '../Layout/DashboardLayout.jsx'
+import React from 'react';
+import { useState } from 'react'
+import DashboardLayout from '../Layout/DashboardLayout.tsx'
 import { Box, Stack, Table, TableBody, TableCell, Button, TableHead, TableRow, Typography, IconButton,  } from '@mui/material'
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import host from '../../Data/Data..js';
+import host from '../../Data/Data.ts';
 import {Link, useNavigate} from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
+import useProductListHook from '../../Hooks/useProductList.tsx';
+import { IProduct } from '../../Interface/IProduct.ts';
 
 const ProductList = () => {
-    
-    const [products, setProducts] = useState([]);
-    const [page, setPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(null);
-    const [count, setCount] = useState(0);
-    const [message, setMessage] = useState('');
+    const urlstring: string = '/product/all';
+    const {productList, page, count, totalPage, prevPage, nextPage} = useProductListHook(urlstring);
+    const [message, setMessage] = useState<string>('');
     const navigate = useNavigate();
-    useEffect(()=>{
-        const fetchData = async()=>{
-            await axios.get('/product/all').then((d)=>{
-                setProducts(d.data.docs);
-                setTotalPage(d.data.totalPages);
-                setCount(d.data.count);
-            })
-        }
-        fetchData();
-    }, [products,page]);
 
-    const destroy = async (id)=>{
+    const destroy = async (id?: string)=>{
         await axios.post(`/product/destroy/${id}`).then((d)=>{
             if(d.data === 'success'){
                 setMessage('Product Deleted.');
@@ -36,7 +26,7 @@ const ProductList = () => {
         })
     }
 
-    const edit = async(id)=>{
+    const edit = async(id?: string)=>{
         navigate(`/product/edit/${id}`);
     }
 
@@ -62,7 +52,7 @@ const ProductList = () => {
             )
         }
        
-        <Table size='sm'>
+        <Table>
             <TableHead>
                 <TableRow>
                     <TableCell>
@@ -96,26 +86,26 @@ const ProductList = () => {
             </TableHead>
             <TableBody>
                 {
-                    products.length > 0 ? (
-                        products.map((d)=>(
-                            <TableRow key={d._id}>
+                    productList &&productList.length > 0 ? (
+                        productList?.map((product : IProduct)=>(
+                            <TableRow key={product._id}>
                                 <TableCell>
-                                    <img src={`${host.host}/images/${d.image}`} style={{width: 75, height: 75, objectFit:'cover'}} />
+                                    <img alt={product.name} src={`${host.host}/images/${product.image}`} style={{width: 75, height: 75, objectFit:'cover'}} />
                                 </TableCell>
-                                <TableCell>{d.name}</TableCell>
-                                <TableCell>{d.price}</TableCell>
+                                <TableCell>{product.name}</TableCell>
+                                <TableCell>{product.price}</TableCell>
                                 <TableCell>
-                                    {d.color && d.color.length > 0 ? d.color.map(color => color.color).join(', ') : 'N/A'}
+                                    {product.color && product.color.length > 0 ? product.color.map(color => color.color).join(', ') : 'N/A'}
                                 </TableCell>
-                                <TableCell>{d.stock}</TableCell>
-                                <TableCell>{d.gender}</TableCell>
-                                <TableCell>{d.brand}</TableCell>
-                                <TableCell>{d.category}</TableCell>
+                                <TableCell>{product.stock}</TableCell>
+                                <TableCell>{product.gender}</TableCell>
+                                <TableCell>{product.brand}</TableCell>
+                                <TableCell>{product.category}</TableCell>
                                 
                                 <TableCell>
                                     <Stack direction={'row'} spacing={2}>
-                                        <Button onClick={()=>edit(d._id)} variant='contained' endIcon={<EditIcon />}>Edit</Button>
-                                        <Button onClick={()=>destroy(d._id)} variant="contained" endIcon={<DeleteIcon />} color='error'>
+                                        <Button onClick={()=>edit(product._id)} variant='contained' endIcon={<EditIcon />}>Edit</Button>
+                                        <Button onClick={()=>destroy(product._id)} variant="contained" endIcon={<DeleteIcon />} color='error'>
                                             Delete
                                         </Button>
                                     </Stack>

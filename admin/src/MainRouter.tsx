@@ -12,8 +12,8 @@ import RedirectNotStaff from './Pages/RouteMiddlewares/RedirectNoStatff.jsx';
 import RedirectNotAdmin from './Pages/RouteMiddlewares/RedirectNotAdmin.jsx';
 import ProductEdit from './Pages/Product/ProductEdit.jsx';
 import ReviewList from './Pages/Review/ReviewList.jsx';
-
-const MainRouter = () => {
+import React from 'react';
+const MainRouter = () : React.JSX.Element => {
     return(
         <BrowserRouter>
         <AuthContextProvider>

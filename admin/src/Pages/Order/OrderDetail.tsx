@@ -1,33 +1,14 @@
+import React from 'react';
 import {  Typography, Box, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, createTheme, Grid, IconButton } from '@mui/material';
-import axios from 'axios';
-import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import DashboardLayout from '../Layout/DashboardLayout';
-import host from '../../Data/Data..js';
+import DashboardLayout from '../Layout/DashboardLayout.tsx';
+import host from '../../Data/Data.ts';
+import useOrderDetail from '../../Hooks/useOrderDetail.tsx';
 
 const theme = createTheme();
-const OrderDetail = () => {
-  const [orderdetail, setOrderDetail] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [subtotalPrice, setSubTotalPrice] = useState(0);
-  const shippingFees = 10;
-  const tax = 5;
-  const params = useParams();
-
-  useEffect(()=>{
-
-    const getData = async()=>{
-      const response = await axios.get(`/orderDetail/getbyOrderId/${params.id}`);
-      const data = response.data;
-      setOrderDetail(data);
-
-      const subTotal = data.length >= 2 ? data.reduce((sum, item)=> sum + item.price  * item.qty, 0) : data[0].price;
-      const total = subTotal + tax + shippingFees;
-      setSubTotalPrice(subTotal);
-      setTotalPrice(total);
-    }
-    getData();
-  },[params.id]);
+const OrderDetail : React.FC = () => {
+  const {id}  = useParams<{id: string}>();
+  const {orderDetail, subtotalPrice, totalPrice, shippingFees, tax} = useOrderDetail(id);
 
   return (
     <DashboardLayout>
@@ -48,8 +29,8 @@ const OrderDetail = () => {
           </TableHead>
           <TableBody>
             {
-              orderdetail.length > 0 ? (
-                orderdetail.map((d)=>(
+              orderDetail && orderDetail.length > 0 ? (
+                orderDetail.map((d)=>(
                   <TableRow key={d._id}>
                   <TableCell sx={{display: 'flex'}}>
                     <img src={`${host.host}/images/${d.product.image}`} style={{width: 75, height: 75, objectFit:'cover'}} />

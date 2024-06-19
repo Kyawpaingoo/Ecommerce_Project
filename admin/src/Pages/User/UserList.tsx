@@ -1,20 +1,13 @@
-import { useEffect, useState } from "react"
-import DashboardLayout from "../Layout/DashboardLayout.jsx"
-import axios from "axios";
+import React from "react";
+import DashboardLayout from "../Layout/DashboardLayout.tsx"
 import { Avatar, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { IUser } from "../../Interface/IUser.ts";
+import useUserList from "../../Hooks/useUserList.tsx";
 
-
-const UserList = () => {
-    const [users, setUsers] = useState([]);
-    useEffect(()=>{
-        const fetchData = async()=>{
-            await axios.get('/admin/').then((d)=>{
-                setUsers(d.data);
-            })
-        }
-        fetchData();
-    },[])
+const UserList : React.FC = () => {
+    const urlstring : string = '/admin/users'
+    const userList = useUserList(urlstring);
     
   return (
     <DashboardLayout>
@@ -28,18 +21,20 @@ const UserList = () => {
                         Name
                     </TableCell>
                     <TableCell>
-                        Name
+                        Email
                     </TableCell>
                     <TableCell>
-                        Row
+                        Gender
                     </TableCell>
-                   
+                    <TableCell>
+                        Access Time
+                    </TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {
-                    users && users.length > 0 ? (
-                        users.filter((user)=> user.role === 'staff').map((user)=>(
+                    userList && userList.length > 0 ? (
+                        userList.filter((user : IUser)=> user.role === 'user').map((user : IUser)=>(
                             <TableRow key={user._id}>
                                 <TableCell>
                                     <Avatar>
@@ -53,7 +48,10 @@ const UserList = () => {
                                     {user.email}
                                 </TableCell>
                                 <TableCell>
-                                    {user.email}
+                                    {user.gender}
+                                </TableCell>
+                                <TableCell>
+                                    {user.createdAt}
                                 </TableCell>
                             </TableRow>
                         ))

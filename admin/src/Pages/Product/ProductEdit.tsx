@@ -1,12 +1,14 @@
-import DashboardLayout from '../Layout/DashboardLayout.jsx'
+import React, { ChangeEvent, useEffect } from 'react';
+import DashboardLayout from '../Layout/DashboardLayout.tsx'
 import {styled} from '@mui/material/styles'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import {Box, Button, TextField, IconButton, Grid, Typography, Paper, InputLabel, Select, MenuItem, FormControl} from '@mui/material';
-import { useEffect, useState } from 'react';
+import {Box, Button, TextField, IconButton, Grid, Typography, Paper, InputLabel, Select, MenuItem, FormControl, SelectChangeEvent} from '@mui/material';
+import {  useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
-import data from '../../Data/Data..js';
+import data from '../../Data/Data.ts';
+import useProductEditHook from '../../Hooks/useProductEditHook.tsx';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -20,64 +22,39 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const ProductEdit = () => {
-  const [price, setPrice] = useState('');
-  const [stock, setStock] = useState('');
-  const [name, setName] = useState('');
-  const [image, setImage] = useState('');
-  const [selectedImage, setSelectedImage] = useState("");
-  const [brand, setBrand] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [colors, setColors] = useState([]);
-  const [gender, setGender] = useState([]);
-  const [selectedgender, setSelectedGender] = useState('');
-  const [selectedbrand, setSelectedBrand] = useState('');
-  const [selectedcategory, setSelectedCategory] = useState('');
-  const [selectedColor, setSelectedColor] = useState([]);
-  const [loader, setLoader] = useState(true);
-  const [errMessage, setErrMessage] = useState('');
-  const {id} = useParams();
+const ProductEdit : React.FC = () => {
+  const {id} = useParams<{id: string}>();
+  const {filterData, productData} = useProductEditHook(id);
+
+  const [price, setPrice] = useState<string>('');
+  const [stock, setStock] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [image, setImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [selectedgender, setSelectedGender] = useState<string>('');
+  const [selectedbrand, setSelectedBrand] = useState<string>('');
+  const [selectedcategory, setSelectedCategory] = useState<string>('');
+  const [selectedColor, setSelectedColor] = useState<string[]>([]);
+  const [errMessage, setErrMessage] = useState<string>('');
   const navigate = useNavigate();
 
   useEffect(()=>{
-    let isApiSubscribed = true;
-    
-    if(isApiSubscribed){
-        getData();
+    if(productData){
+      setName(productData.name);
+      setPrice(productData.price.toString());
+      setStock(productData?.stock.toString());
+      setSelectedBrand(productData.brand);
+      setSelectedCategory(productData.category);
+      setSelectedGender(productData.gender);
+      setSelectedColor(productData.color.map(color=> color._id));
+      setSelectedImage(productData.image);
     }
-    
-    return ()=>{
-      isApiSubscribed = false;
-  }
-  },[])
+  })
 
-  const getData = async()=>{
-    const filterDataRequest = await axios.get('/data/get-filter-data');
-    const productRequest = await axios.get('/product/edit/'+id);
-
-    Promise.all([filterDataRequest, productRequest]).then((res)=>{
-        const filterData = res[0].data;
-        const productData = res[1].data;
-
-        setBrand(filterData.brand);
-        setCategory(filterData.category);
-        setGender(filterData.gender);
-        setColors(filterData.colors);
-
-        setName(productData.name);
-        setPrice(productData.price);
-        setStock(productData.stock);
-        setSelectedBrand(productData.brand);
-        setSelectedCategory(productData.category);
-        setSelectedGender(productData.gender);
-        setSelectedColor(productData.color.map(color => color._id));
-        setSelectedImage(productData.image)
-    })
-  }
   const update = async()=>{
     var formData = new FormData();
     formData.append('name', name);
-    formData.append('image', image);
+    formData.append('image', image as Blob);
     formData.append('price', price);
     formData.append('stock', stock)
     formData.append('brand', selectedbrand);
@@ -95,20 +72,21 @@ const ProductEdit = () => {
     })
   }
 
-  const handleFile = (event)=>{
-      const file = event.target.files[0];
-      console.log(file)
-      if(file){
-        const reader = new FileReader();
-        reader.onload = (e)=>{
-          setSelectedImage(e.target.result);
+  const handleFile = (event : ChangeEvent<HTMLInputElement>)=>{
+    const file = event.target.files?.[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = (event: ProgressEvent<FileReader>)=>{
+        if(event.target){
+          setSelectedImage(event.target.result as string);
         }
-        reader.readAsDataURL(file);
-        setImage(file);
-      } else{
-        console.log('no file')
-      }    
-  }
+      }
+      reader.readAsDataURL(file);
+      setImage(file);
+    } else{
+      console.log('no file')
+    }    
+}
 
   const closeMessage = ()=>{
     setErrMessage('');
@@ -154,7 +132,7 @@ const ProductEdit = () => {
           <Box component='form'>
             <TextField
               value={name}
-              onChange={(e)=>setName(e.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setName(event.target.value)}
               required
               sx={{width: 550, minWidth: 350}}
               id="name"
@@ -165,7 +143,7 @@ const ProductEdit = () => {
               
             <TextField
               value={price}
-              onChange={(e)=>setPrice(e.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setPrice(event.target.value)}
               required
               label="Price"
               sx={{mt: 2, width: 550, minWidth: 350}}
@@ -177,7 +155,7 @@ const ProductEdit = () => {
             />
             <TextField
               value={stock}
-              onChange={(e)=>setStock(e.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setStock(event.target.value)}
               required
               label="Stock"
               sx={{mt: 2, width: 550, minWidth: 350}}
@@ -198,8 +176,8 @@ const ProductEdit = () => {
                   onChange={(event)=>setSelectedGender(event.target.value)}
                 >
                   {
-                    gender != null && 
-                    gender.map((d)=>(
+                    filterData?.gender && 
+                    filterData.gender.map((d)=>(
                       <MenuItem key={d._id} value={d.gender}>
                         {d.gender}
                       </MenuItem>
@@ -216,8 +194,8 @@ const ProductEdit = () => {
                 onChange={(event)=>setSelectedBrand(event.target.value)}
               >
                 {
-                  brand != null && 
-                  brand.map((d)=>(
+                  filterData?.brand && 
+                  filterData.brand.map((d)=>(
                     <MenuItem key={d._id} value={d.brand}>
                       {d.brand}
                     </MenuItem>
@@ -234,8 +212,8 @@ const ProductEdit = () => {
                 onChange={(event)=>setSelectedCategory(event.target.value)}
               >
                 {
-                  category != null && 
-                  category.map((d)=>(
+                  filterData?.category && 
+                  filterData.category.map((d)=>(
                     <MenuItem key={d._id} value={d.category}>
                       {d.category}
                     </MenuItem>
@@ -254,11 +232,13 @@ const ProductEdit = () => {
                             value={selectedColor}
                             multiple
                             label="color"
-                            onChange={(event)=>setSelectedColor(event.target.value)}
+                            onChange={(event: SelectChangeEvent<string[]>)=>(
+                              setSelectedColor(event.target.value as string[])
+                            )}
                             >
                                 {
-                                colors != null && 
-                                colors.map((d)=>(
+                                filterData?.colors && 
+                                filterData.colors.map((d)=>(
                                     <MenuItem key={d._id} value={d._id}>
                                     {d.color}
                                     </MenuItem>

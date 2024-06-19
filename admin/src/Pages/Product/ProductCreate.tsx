@@ -1,11 +1,13 @@
-import DashboardLayout from '../Layout/DashboardLayout.jsx'
+import React, { ChangeEvent } from 'react';
+import DashboardLayout from '../Layout/DashboardLayout.tsx'
 import {styled} from '@mui/material/styles'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import {Box, Button, TextField, IconButton, Grid, Typography, Paper, InputLabel, Select, MenuItem, FormControl} from '@mui/material';
+import {Box, Button, TextField, IconButton, Grid, Typography, Paper, InputLabel, Select, MenuItem, FormControl, SelectChangeEvent} from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
+import useFilterData from '../../Hooks/useFilterData.tsx';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -19,47 +21,25 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const ProductCreate = () => {
-  const [price, setPrice] = useState('');
-  const [stock, setStock] = useState('');
-  const [name, setName] = useState('');
-  const [image, setImage] = useState('');
-  const [selectedImage, setSelectedImage] = useState("");
-  const [brand, setBrand] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [colors, setColors] = useState([]);
-  const [gender, setGender] = useState([]);
-  const [selectedgender, setSelectedGender] = useState('');
-  const [selectedbrand, setSelectedBrand] = useState('');
+const ProductCreate : React.FC = () => {
+  const [price, setPrice] = useState<string>('');
+  const [stock, setStock] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [image, setImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [selectedgender, setSelectedGender] = useState<string>('');
+  const [selectedbrand, setSelectedBrand] = useState<string>('');
   const [selectedcategory, setSelectedCategory] = useState('');
-  const [selectedColor, setSelectedColor] = useState([]);
-  const [loader, setLoader] = useState(true);
-  const [errMessage, setErrMessage] = useState('');
+  const [selectedColor, setSelectedColor] = useState<string[]>([]);
+  const [errMessage, setErrMessage] = useState<string>('');
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    let isApiSubscribed = true;
-    const getData = async()=>{
-      await axios.get('/data/get-filter-data').then((d)=>{
-        if(isApiSubscribed){
-          setLoader(false);
-          setBrand(d.data.brand);
-          setCategory(d.data.category);
-          setGender(d.data.gender);
-          setColors(d.data.colors);     
-        }
-      })
-    }
-    getData();
-    return ()=>{
-      isApiSubscribed = false;
-  }
-  },[])
+  const filterList = useFilterData('/data/get-filter-data')
 
   const store = async()=>{
     var formData = new FormData();
     formData.append('name', name);
-    formData.append('image', image);
+    formData.append('image', image as Blob);
     formData.append('price', price);
     formData.append('stock', stock)
     formData.append('brand', selectedbrand);
@@ -78,12 +58,14 @@ const ProductCreate = () => {
     })
   }
 
-  const handleFile = (event)=>{
-      const file = event.target.files[0];
+  const handleFile = (event : ChangeEvent<HTMLInputElement>)=>{
+      const file = event.target.files?.[0];
       if(file){
         const reader = new FileReader();
-        reader.onload = (e)=>{
-          setSelectedImage(e.target.result);
+        reader.onload = (event: ProgressEvent<FileReader>)=>{
+          if(event.target){
+            setSelectedImage(event.target.result as string);
+          }
         }
         reader.readAsDataURL(file);
         setImage(file);
@@ -135,7 +117,7 @@ const ProductCreate = () => {
         <Grid item xs={12} sm={8} md={8}>
           <Box component='form'>
             <TextField
-              onChange={(e)=>setName(e.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setName(event.target.value)}
               required
               sx={{width: 550, minWidth: 350}}
               id="name"
@@ -145,7 +127,7 @@ const ProductCreate = () => {
               autoFocus/> 
               
               <TextField
-              onChange={(e)=>setPrice(e.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setPrice(event.target.value)}
               required
               label="Price"
               sx={{mt: 2, width: 550, minWidth: 350}}
@@ -156,7 +138,7 @@ const ProductCreate = () => {
               autoComplete='price'
             />
             <TextField
-              onChange={(e)=>setStock(e.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setStock(event.target.value)}
               required
               label="Stock"
               sx={{mt: 2, width: 550, minWidth: 350}}
@@ -173,11 +155,11 @@ const ProductCreate = () => {
                   id="gender"
                   value={selectedgender}
                   label="Gender"
-                  onChange={(event)=>setSelectedGender(event.target.value)}
+                  onChange={(event: SelectChangeEvent<string>)=>setSelectedGender(event.target.value)}
                 >
                   {
-                    gender != null && 
-                    gender.map((d)=>(
+                    filterList?.gender && 
+                    filterList.gender.map((d)=>(
                       <MenuItem key={d._id} value={d.gender}>
                         {d.gender}
                       </MenuItem>
@@ -191,11 +173,11 @@ const ProductCreate = () => {
                 id="brand"
                 value={selectedbrand}
                 label="Brand"
-                onChange={(event)=>setSelectedBrand(event.target.value)}
+                onChange={(event: SelectChangeEvent<string>)=>setSelectedBrand(event.target.value)}
               >
                 {
-                  brand != null && 
-                  brand.map((d)=>(
+                  filterList?.brand &&
+                  filterList.brand.map((d)=>(
                     <MenuItem key={d._id} value={d.brand}>
                       {d.brand}
                     </MenuItem>
@@ -209,11 +191,11 @@ const ProductCreate = () => {
                 id="brand"
                 value={selectedcategory}
                 label="Category"
-                onChange={(event)=>setSelectedCategory(event.target.value)}
+                onChange={(event: SelectChangeEvent<string>)=>setSelectedCategory(event.target.value)}
               >
                 {
-                  category != null && 
-                  category.map((d)=>(
+                  filterList?.category && 
+                  filterList.category.map((d)=>(
                     <MenuItem key={d._id} value={d.category}>
                       {d.category}
                     </MenuItem>
@@ -229,11 +211,11 @@ const ProductCreate = () => {
                   value={selectedColor}
                   multiple
                   label="color"
-                  onChange={(event)=>setSelectedColor(event.target.value)}
+                  onChange={(event : SelectChangeEvent<string[]>)=>setSelectedColor(event.target.value as string[])}
                 >
                     {
-                      colors != null && 
-                      colors.map((d)=>(
+                      filterList?.colors && 
+                      filterList.colors.map((d)=>(
                         <MenuItem key={d._id} value={d._id}>
                           {d.color}
                         </MenuItem>

@@ -1,30 +1,16 @@
+import React from 'react'
 import { Grid, Paper, Typography, Link } from '@mui/material'
-import DashBoardLayout from './Layout/DashboardLayout.jsx'
+import DashBoardLayout from './Layout/DashboardLayout.tsx'
 import Chart from '../Components/Chart.jsx'
 import { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
 import { Navigate } from 'react-router-dom'
-import AuthContext from '../Context/AuthContext.jsx'
+import AuthContext from '../Context/AuthContext.tsx'
+import useAnalyticsData from '../Hooks/useAnalyticsData.tsx'
 
-const Dashboard = () => {
-  const [user, setUser] = useState([]);
-  const [product, setProuct] = useState([]);
-  const [order, setOrder] = useState([]);
+const Dashboard : React.FC = ()  => {
+  const urlstring : string = '/analytic/all/';
+  const {user, product, order} = useAnalyticsData(urlstring);
   const {authUser} = useContext(AuthContext);
-  useEffect(()=>{
-    const fetchData = async ()=>{
-      const response = await axios.get('/analytic/all/');
-      const userData = response.data.user.length;
-      const productData = response.data.product.length;
-      const orderData = response.data.order.length;
-
-      setUser(userData);
-      setProuct(productData);
-      setOrder(orderData);
-    }
-
-    fetchData();
-  },[user, product, order])
 
   return ( 
       authUser ? (
