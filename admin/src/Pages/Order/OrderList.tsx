@@ -1,13 +1,14 @@
 import React from 'react';
-import { Chip, IconButton, List, ListItem, ListItemAvatar, Menu, MenuItem, ListItemText, Typography, Avatar, ListItemSecondaryAction } from '@mui/material';
+import { Chip, IconButton, List, ListItem, ListItemAvatar, Menu, MenuItem, ListItemText, Typography, Avatar, ListItemSecondaryAction, Box } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import DashboardLayout from '../Layout/DashboardLayout';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link } from 'react-router-dom';
-import useOrderList from '../../Hooks/useOrderList';
 import { IOrder } from '../../Interface/IOrder';
+import useApiList from '../../Hooks/useApiList';
+import PaginatedComp from '../../Components/Pagination';
 
 interface StatusDropdownProps{
     status: string;
@@ -57,13 +58,15 @@ const StatusDropdown : React.FC<StatusDropdownProps> = ({status, orderId, onStat
  
 const OrderList : React.FC = () => {
     const urlstring: string = '/order/all'
-    const {orderList, page, totalPage} = useOrderList(urlstring);
-    
-    const [orederListState, setOrderListState] = useState<IOrder[]>(orderList ?? []);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const {resultList, page, totalPage} = useApiList<IOrder>(urlstring, currentPage);
+    const [orederListState, setOrderListState] = useState<IOrder[]>(resultList ?? []);
 
     useEffect(()=>{
-        setOrderListState(orderList ?? []);
-    },[orderList])
+        setOrderListState(resultList ?? []);
+        setCurrentPage(page)
+    },[resultList, page])
+
     const handleStatusChange = (orderId : string, newStatus : string) =>{
         
         setOrderListState((prevList)=>{
@@ -73,52 +76,61 @@ const OrderList : React.FC = () => {
         })
     }
 
+    const handlePageChange = (page: number)=>{
+        setCurrentPage(page);
+    }
+
   return (
     <DashboardLayout>
-        <List sx={{width: '100%'}}>
-            {
-               orederListState && orederListState.length > 0 ? (
-                    orederListState.map((order)=>(
-                        <ListItem key={order._id} sx={{borderBottom: 1}}>
-                            <ListItemSecondaryAction>
-                                <Link  to={`/orderDetail/${order._id}`}>
-                                    <IconButton edge='end'>
-                                        <Avatar sx={{bgcolor: 'black'}}>
-                                            <ArrowForwardIosIcon />
-                                        </Avatar>
-                                    </IconButton>
-                                </Link>
-                            </ListItemSecondaryAction>
-                            <ListItemAvatar>
-                                <Inventory2Icon />
-                            </ListItemAvatar>
-                            <ListItemText 
-                                primary={order.user}
-                                secondary={order.createdAt.toString()}
-                            />
-                            <ListItemText>
-                                <Typography variant='h6'>
-                                {order.code}
-                                </Typography>
-                                
-                            </ListItemText>
-                            <ListItemText>
-                                <Typography variant='subtitle1'>
-                                {order.shipping_address}
-                                </Typography>
-                                
-                            </ListItemText>
-                            <StatusDropdown 
-                            status={order.status} 
-                            orderId={order._id}
-                            onStatusChange={(newStatus)=>handleStatusChange(order._id, newStatus)} />
-                        </ListItem>
-                    ))
-                ) : (
-                    <Typography>No Data Found.</Typography>
-                )
-            }
-        </List>
+        <Box sx={{height: '600px'}}>
+            <List sx={{width: '100%'}}>
+                {
+                orederListState && orederListState.length > 0 ? (
+                        orederListState.map((order)=>(
+                            <ListItem key={order._id} sx={{borderBottom: 1}}>
+                                <ListItemSecondaryAction>
+                                    <Link to={`/orderDetail/${order._id}`}>
+                                        <IconButton edge='end'>
+                                            <Avatar sx={{bgcolor: 'black'}}>
+                                                <ArrowForwardIosIcon />
+                                            </Avatar>
+                                        </IconButton>
+                                    </Link>
+                                </ListItemSecondaryAction>
+                                <ListItemAvatar>
+                                    <Inventory2Icon />
+                                </ListItemAvatar>
+                                <ListItemText 
+                                    primary={order.user}
+                                    secondary={order.createdAt.toString()}
+                                />
+                                <ListItemText>
+                                    <Typography variant='h6'>
+                                    {order.code}
+                                    </Typography>
+                                    
+                                </ListItemText>
+                                <ListItemText>
+                                    <Typography variant='subtitle1'>
+                                    {order.shipping_address}
+                                    </Typography>
+                                    
+                                </ListItemText>
+                                <StatusDropdown 
+                                status={order.status} 
+                                orderId={order._id}
+                                onStatusChange={(newStatus)=>handleStatusChange(order._id, newStatus)} />
+                            </ListItem>
+                        ))
+                    ) : (
+                        <Typography>No Data Found.</Typography>
+                    )
+                }
+            </List>
+        </Box>
+        <Box marginTop={4}>
+            <PaginatedComp currentPage={currentPage} totalPage={totalPage} onPageChange={handlePageChange} />
+        </Box>
     </DashboardLayout>
         
   )

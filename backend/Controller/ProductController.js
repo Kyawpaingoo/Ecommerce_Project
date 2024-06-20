@@ -39,7 +39,7 @@ export const createProduct = async(req, res)=>{
 
 export const getProductList = async (req, res) =>{
     const {page, name, gender, category, color, brand} = req.query;
-    const limit  = 30;
+    const limit  = 5;
     const sortField = '_id';
     const sortOrder = -1;
 

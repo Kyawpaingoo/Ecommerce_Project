@@ -20,7 +20,7 @@ const ReviewSchema = new mongose.Schema({
     }
 })
 
-ReviewSchema.index({name: 'text'});
+ReviewSchema.index({name: 'name'});
 ReviewSchema.plugin(mongoosePaginate);
 
 export default mongose.model('reviews', ReviewSchema);

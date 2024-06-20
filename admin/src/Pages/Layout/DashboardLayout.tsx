@@ -137,7 +137,7 @@ const DashboardLayout = (props : any) : React.JSX.Element => {
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, overflow: 'auto' }}>
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 2, mb: 2 }}>
+          <Container maxWidth="lg" sx={{ mt: 2, mb: 2}}>
             {props.children}
           </Container>
         </Box>

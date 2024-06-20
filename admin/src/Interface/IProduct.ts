@@ -16,25 +16,3 @@ export interface IProduct {
     category: string;
     _v?: number;
 }
-
-export interface IApiResponse {
-    docs: IProduct[] | null;
-    totalDocs: number;
-    limit: number;
-    totalPages: number;
-    page: number;
-    pagingCounter: number;
-    hasPrevPage: boolean;
-    hasNextPage: boolean;
-    prevPage: number | null;
-    nextPage: number | null;
-}
-
-export interface ProductHookResult {
-    productList: IProduct[] | null;
-    page: number;
-    count: number;
-    totalPage: number;
-    prevPage: number | null;
-    nextPage: number | null;
-}

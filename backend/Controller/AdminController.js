@@ -2,9 +2,22 @@ import UserModel from "../Model/UserModel.js"
 import validator from 'indicative/validator.js';
 import {successJson, errorJson} from './Utilits/JsonRes.js';
 import bcrypt from 'bcryptjs';
+import { paginateResult } from "../Helper/Paginate.js";
 
 export const getUserList = async(req, res)=>{
-    const result = await UserModel.find();
+    const {page, name, email} = req.query;
+    const limit  = 30;
+    const sortField = '_id';
+    const sortOrder = -1;
+
+    const queryBuilder = [];
+    if(name){
+        queryBuilder.push({$text: {$search: name}});
+    }
+    if (email) {
+        queryBuilder.push({"email": email})
+      }
+    const result = await paginateResult(UserModel, page, limit, sortField, sortOrder, queryBuilder);
     res.json(result);
 }
 

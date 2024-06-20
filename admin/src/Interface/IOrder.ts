@@ -18,25 +18,3 @@ export interface IOrderDetail {
     qty: number;
     price: number;
 }
-
-export interface IOrderApiResponse{
-    docs: IOrder[] | null;
-    totalDocs: number;
-    limit: number;
-    totalPages: number;
-    page: number;
-    pagingCounter: number;
-    hasPrevPage: boolean;
-    hasNextPage: boolean;
-    prevPage: number | null;
-    nextPage: number | null;
-}
-
-export interface OrderHookResult {
-    orderList: IOrder[] | null;
-    page: number;
-    count: number;
-    totalPage: number;
-    prevPage: number | null;
-    nextPage: number | null;
-}
