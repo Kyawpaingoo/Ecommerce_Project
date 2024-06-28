@@ -5,11 +5,12 @@ import Chart from '../Components/Chart.jsx'
 import { useContext, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import AuthContext from '../Context/AuthContext.tsx'
-import useAnalyticsData from '../Hooks/useAnalyticsData.tsx'
+import useApiData from '../Hooks/useApiData.tsx'
+import { IAnalyticsData } from '../Interface/IAnalytics.ts'
 
 const Dashboard : React.FC = ()  => {
   const urlstring : string = '/analytic/all/';
-  const {user, product, order} = useAnalyticsData(urlstring);
+  const result = useApiData<IAnalyticsData>(urlstring)
   const {authUser} = useContext(AuthContext);
 
   return ( 
@@ -24,7 +25,7 @@ const Dashboard : React.FC = ()  => {
                     
                   }}>
                     <Typography variant='h6' color={'primary'}>Orders</Typography>
-                    <Typography variant='h4' color={'green'}>{order}</Typography>
+                    <Typography variant='h4' color={'green'}>{result?.order}</Typography>
                   </Paper>
               </Grid>
               <Grid item md={4}>
@@ -35,7 +36,7 @@ const Dashboard : React.FC = ()  => {
                     
                   }}>
                     <Typography variant='h6' color={'primary'}>Products</Typography>
-                    <Typography variant='h4' color={'green'}>{product}</Typography>
+                    <Typography variant='h4' color={'green'}>{result?.product}</Typography>
                   </Paper>
               </Grid>
               <Grid item md={4}>
@@ -46,7 +47,7 @@ const Dashboard : React.FC = ()  => {
                     
                   }}>
                     <Typography variant='h6' color={'primary'}>Users</Typography>
-                    <Typography variant='h4' color={'green'}>{user}</Typography>
+                    <Typography variant='h4' color={'green'}>{result?.user}</Typography>
                   </Paper>
               </Grid>
   
