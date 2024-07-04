@@ -48,8 +48,7 @@ const ProductEdit : React.FC = () => {
       setSelectedColor(
         productData.color?.map((color) => color._id)
       );
-      setSelectedImage(data.host + productData.image);
-      console.log(selectedImage);
+      setSelectedImage(productData.image);
     }
   }, [productData]);
 
@@ -88,11 +87,15 @@ const ProductEdit : React.FC = () => {
     } else{
       console.log('no file')
     }    
-}
+  }
+
+  const handleCancelClick = ()=>{
+    navigate('/product');
+  }
 
   const closeMessage = ()=>{
     setErrMessage('');
-}
+  }
   return (
     <DashboardLayout>
       <Grid container component={Paper} spacing={4} sx={{ width:'120vh', marginX: 15, marginY: 5, paddingBottom: 4}} elevation={6} square>
@@ -252,8 +255,8 @@ const ProductEdit : React.FC = () => {
                 }
             </FormControl>
               <Box sx={{ marginTop: 2}}>
-                <Button onClick={update} variant='contained' color='success' sx={{marginRight: 2}}>Create</Button>
-                <Button variant='contained' color='error'>Cancel</Button>
+                <Button onClick={update} variant='contained' color='success' sx={{marginRight: 2}}>Update</Button>
+                <Button onClick={handleCancelClick} variant='contained' color='error'>Cancel</Button>
               </Box>
           </Box>
         </Grid>

@@ -74,6 +74,10 @@ const ProductCreate : React.FC = () => {
       }    
   }
 
+  const handleCancelClick = ()=>{
+    navigate('/product');
+  }
+
   const closeMessage = () => void setErrMessage('');
   return (
     <DashboardLayout>
@@ -223,7 +227,7 @@ const ProductCreate : React.FC = () => {
             </FormControl>
               <Box sx={{ marginTop: 2}}>
                 <Button onClick={store} variant='contained' color='success' sx={{marginRight: 2}}>Create</Button>
-                <Button variant='contained' color='error'>Cancel</Button>
+                <Button onClick={handleCancelClick} variant='contained' color='error'>Cancel</Button>
               </Box>
           </Box>
         </Grid>

@@ -9,9 +9,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -23,8 +20,6 @@ import { Group, Home, Inbox, Notifications, Person, Reviews, Sell, ShoppingCart 
 import { AppBar,Drawer, Tooltip, Badge, MenuItem, Menu } from '@mui/material';
 
 const drawerWidth = 240;
-
-
 type SideBarProps = {
     authData: AuthContextType;
 }
@@ -73,7 +68,7 @@ const Sidebar: React.FC<SideBarProps> = ({authData})=> {
         width: `calc(100% - ${drawerWidth}px)`,
       }}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
+          <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1, fontWeight: 'bold'}}>
             Admin Dashboard
           </Typography>
             <IconButton color="inherit" sx={{ mr: 2 }}>

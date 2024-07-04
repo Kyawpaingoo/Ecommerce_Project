@@ -18,7 +18,7 @@ const OrderDetail : React.FC = () => {
 
   useEffect(()=>{
     setOrder(orderData);
-  }, [order]);
+  }, [orderData]);
 
   const handleOrderUpdate = async (orderId: string, newStatus: string) => {
     const response = axios.post<IOrder>('/order/updateStatus/'+orderId, {status: newStatus});
@@ -95,7 +95,7 @@ const OrderDetail : React.FC = () => {
                 </Grid>
               </Grid>
               <Grid container item md={6} paddingLeft={4}>
-                <OrderTrack orderData={orderData} onOrderUpdate={handleOrderUpdate} />
+                <OrderTrack orderData={order} onOrderUpdate={handleOrderUpdate} />
               </Grid>
             </Grid>
           </>

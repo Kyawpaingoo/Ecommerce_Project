@@ -12,28 +12,7 @@ type DashboardLayoutProps = {
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({children}) => {
-  const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
   const authContext = useContext(AuthContext);
-  //const { authUser, setAuthUser } = authContext;
-  
-  const navigate = useNavigate();
-
-  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
-
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
-
-  // const logout = async () => {
-  //   await axios.post('/logout').then((data) => {
-  //     if (data.data === 'success') {
-  //       authContext.setAuthUser(false);
-  //       navigate('/login');
-  //     }
-  //   });
-  // };
 
   return (
         <Box sx={{display: 'flex'}}>

@@ -16,6 +16,7 @@ const useProductEditHook = (id: string | undefined) => {
                 const [filterResponse, productResponse] = await Promise.all([filterDataRequest, productRequest]);
                 setFilterData(filterResponse.data);
                 setProductData(productResponse.data);
+                console.log(productResponse.data);
             }
             catch(error){
                 console.error('Error fetching Data', error);

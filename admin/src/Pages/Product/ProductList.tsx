@@ -15,21 +15,23 @@ import PaginatedComp from '../../Components/Pagination.tsx';
 
 const ProductList = () => {
     const urlstring: string = '/product/all';
+    const [products, setProducts] = useState<IProduct[] | null>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const {resultList: products, page, count, totalPage, prevPage, nextPage} = useApiList<IProduct>(urlstring, currentPage);
+    const {resultList, page, count, totalPage, prevPage, nextPage} = useApiList<IProduct>(urlstring, currentPage);
     const [message, setMessage] = useState<string>('');
     const navigate = useNavigate();
 
     useEffect(()=>{
+        setProducts(resultList);
         setCurrentPage(page);
-    }, [page])
+    }, [resultList, page])
     
     const destroy = async (id?: string)=>{
         await axios.post(`/product/destroy/${id}`).then((d)=>{
             console.log(d);
             if(d.data === 'success'){
                 setMessage('Product Delete Success!');
-                
+                setProducts(products => products?.filter(product => product._id !== id) || null);
             }
             else{
                 setMessage('Product Delete Failed!');
