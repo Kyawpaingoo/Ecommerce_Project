@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react'
 import DashboardLayout from '../Layout/DashboardLayout.tsx'
-import { Box, Stack, Table, TableBody, TableCell, Button, TableHead, TableRow, Typography, IconButton,  } from '@mui/material'
+import { Box, Stack, Table, TableBody, TableCell, Button, TableHead, TableRow, Typography, IconButton, Paper,  } from '@mui/material'
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,8 +26,13 @@ const ProductList = () => {
     
     const destroy = async (id?: string)=>{
         await axios.post(`/product/destroy/${id}`).then((d)=>{
+            console.log(d);
             if(d.data === 'success'){
-                setMessage('Product Deleted.');
+                setMessage('Product Delete Success!');
+                
+            }
+            else{
+                setMessage('Product Delete Failed!');
             }
         })
     }
@@ -54,7 +59,7 @@ const ProductList = () => {
         <Box sx={{height:'600px'}}>
             {
                 message && (
-                    <Box sx={{width: '100%', marginY: 2, backgroundColor: '#00e676'}} display={'flex'}>
+                    <Box sx={{width: '100%', marginY: 2, backgroundColor: message == 'Product Delete Success!'? '#00e676' : 'red'}} display={'flex'}>
                         <Typography paddingY={1} paddingLeft={2} color={'white'}>{message}</Typography>
                         <IconButton onClick={closeMessage} sx={{marginLeft:'auto'}}>
                             <CloseIcon sx={{color: 'white'}}  />
@@ -62,7 +67,7 @@ const ProductList = () => {
                     </Box>
                 )
             }      
-            <Table>
+            <Table borderBottom={1} component={Box}  sx={{ minWidth: 700 }}>
                 <TableHead>
                     <TableRow>
                         <TableCell>
@@ -102,9 +107,9 @@ const ProductList = () => {
                                     <TableCell>
                                         <img alt={product.name} src={`${host.host}/images/${product.image}`} style={{width: 75, height: 75, objectFit:'cover'}} />
                                     </TableCell>
-                                    <TableCell>{product.name}</TableCell>
-                                    <TableCell>{product.price}</TableCell>
-                                    <TableCell>
+                                    <TableCell sx={{width: '350px'}}>{product.name}</TableCell>
+                                    <TableCell sx={{width: '150px'}}>{product.price}</TableCell>
+                                    <TableCell sx={{width: '200px'}}>
                                         {product.color && product.color.length > 0 ? product.color.map(color => color.color).join(', ') : 'N/A'}
                                     </TableCell>
                                     <TableCell>{product.stock}</TableCell>
@@ -131,7 +136,7 @@ const ProductList = () => {
                 </TableBody>
             </Table>
         </Box>
-        <Box marginTop={4}>
+        <Box marginY={4}>
             <PaginatedComp currentPage={currentPage} totalPage={totalPage} onPageChange={handlPageChange} />        
         </Box>
     </DashboardLayout>

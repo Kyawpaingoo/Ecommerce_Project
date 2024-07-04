@@ -1,7 +1,7 @@
 import {  Pagination, Stack } from '@mui/material';
 import React from 'react'
 
-interface PaginationProps{
+type PaginationProps = {
     currentPage: number;
     totalPage:number;
     onPageChange: (page: number)=>void;

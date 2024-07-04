@@ -74,12 +74,10 @@ const ProductCreate : React.FC = () => {
       }    
   }
 
-  const closeMessage = ()=>{
-    setErrMessage('');
-}
+  const closeMessage = () => void setErrMessage('');
   return (
     <DashboardLayout>
-      <Grid container component={Paper} spacing={4} sx={{ width:'120vh', marginX: 25, marginY: 5, paddingBottom: 4}} elevation={6} square>
+      <Grid container component={Paper} spacing={4} sx={{ width:'120vh', marginX: 15, marginY: 5, paddingBottom: 4}} elevation={6} square>
         <Grid item md={12}>
         {
             errMessage && (

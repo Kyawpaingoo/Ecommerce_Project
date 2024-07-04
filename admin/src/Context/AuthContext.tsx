@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react'
 import { IAuthUser } from '../Interface/IAuthUser';
 import useAuth from '../Hooks/useAuth';
 
-type AuthContextType = {
+export type AuthContextType = {
     authUser : IAuthUser | null | false,
     setAuthUser : React.Dispatch<React.SetStateAction<IAuthUser | null | false>>;
 }

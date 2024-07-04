@@ -2,9 +2,14 @@
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, axisClasses } from '@mui/x-charts';
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 
-function createData(time, amount) {
+type ChartDataProps = {
+  time: string,
+  amount: number,
+}
+
+function createData(time: string, amount: number) : ChartDataProps {
   return { time, amount: amount ?? null };
 }
 
@@ -17,9 +22,8 @@ const data = [
   createData('15:00', 2000),
   createData('18:00', 2400),
   createData('21:00', 2400),
-  createData('24:00'),
 ];
-const Chart = () => {
+const Chart: React.FC = () => {
     const theme = useTheme();
   return (
     <Fragment>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chip, IconButton, List, ListItem, ListItemAvatar, Menu, MenuItem, ListItemText, Typography, Avatar, ListItemSecondaryAction, Box } from '@mui/material';
+import { Chip, IconButton, List, ListItem, ListItemAvatar, Menu, MenuItem, ListItemText, Typography, Avatar, ListItemSecondaryAction, Box, Table, TableHead, TableRow, TableCell, TableBody, styled } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import Inventory2Icon from '@mui/icons-material/Inventory2';
@@ -9,49 +9,26 @@ import { Link } from 'react-router-dom';
 import { IOrder } from '../../Interface/IOrder';
 import useApiList from '../../Hooks/useApiList';
 import PaginatedComp from '../../Components/Pagination';
+import { getStatusColor } from '../../Ultis/getStatusIndex';
 
-interface StatusDropdownProps{
+type StatusDropdownProps = {
     status: string;
-    orderId: string;
-    onStatusChange: (status: string) => void;
 }
 
-const StatusDropdown : React.FC<StatusDropdownProps> = ({status, orderId, onStatusChange}) =>{
-    const [anchorEI, setAncorEl] = useState<null | HTMLElement>(null);
+const OrderStatusChip = styled(Chip)(({theme})=>({
+    color: theme.palette.common.white,
+}))
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) =>{
-        setAncorEl(event.currentTarget);
-    }
-
-    const handleClose = ()=>{
-        setAncorEl(null);
-    }
-
-    const handleMenuItemClick = async (status: string) =>{
-        const response = await axios.post('/order/updateStatus/'+orderId, {status: status});
-        const updatedData = response.data; 
-        onStatusChange(updatedData.status);
-        handleClose();
-    }
-
+const StatusDropdown : React.FC<StatusDropdownProps> = ({status}) =>{
     return(
         <>
             <ListItemText>
-                <Chip label={status} 
-                color={status == 'On Delivery' ? 'primary' : status == 'Arrive' ? 'success' : 'default'} 
-                onClick={handleClick}
-                style={{cursor: 'pointer'}}
+                <OrderStatusChip label={status} 
+                   style={{
+                    backgroundColor: getStatusColor(status),
+                   }}
                 />
             </ListItemText>
-            <Menu
-                anchorEl={anchorEI}
-                open={Boolean(anchorEI)}
-                onClose={handleClose}
-            >
-                <MenuItem onClick={()=> handleMenuItemClick('Packing')}>Packing</MenuItem>
-                <MenuItem onClick={()=> handleMenuItemClick('On Delivery')}>On Delivery</MenuItem>
-                <MenuItem onClick={()=> handleMenuItemClick('Arrive')}>Arrive</MenuItem>
-            </Menu>
         </>
     )
 }
@@ -67,15 +44,6 @@ const OrderList : React.FC = () => {
         setCurrentPage(page)
     },[resultList, page])
 
-    const handleStatusChange = (orderId : string, newStatus : string) =>{
-        
-        setOrderListState((prevList)=>{
-            return prevList.map((order)=>{
-            return order._id == orderId ? {...order, status: newStatus} : order
-            });
-        })
-    }
-
     const handlePageChange = (page: number)=>{
         setCurrentPage(page);
     }
@@ -83,52 +51,67 @@ const OrderList : React.FC = () => {
   return (
     <DashboardLayout>
         <Box sx={{height: '600px'}}>
-            <List sx={{width: '100%'}}>
-                {
-                orederListState && orederListState.length > 0 ? (
-                        orederListState.map((order)=>(
-                            <ListItem key={order._id} sx={{borderBottom: 1}}>
-                                <ListItemSecondaryAction>
-                                    <Link to={`/orderDetail/${order._id}`}>
-                                        <IconButton edge='end'>
-                                            <Avatar sx={{bgcolor: 'black'}}>
+            <Table borderBottom={1} component={Box}  sx={{ minWidth: 700 }}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>
+                            No
+                        </TableCell>
+                        <TableCell>
+                            Order Code
+                        </TableCell>
+                        <TableCell>
+                            User ID
+                        </TableCell>
+                        <TableCell>
+                            Shipping Address
+                        </TableCell>
+                        <TableCell>
+                            Order Status
+                        </TableCell>
+                        <TableCell>
+                            Action
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        orederListState && orederListState.length > 0 ? (
+                            orederListState.map((order)=>(
+                                <TableRow key={order._id}>
+                                    <TableCell>
+                                        {(page * 0) + (orederListState.indexOf(order) + 1)}
+                                    </TableCell>
+                                    <TableCell>
+                                        {order.code}
+                                    </TableCell>
+                                    <TableCell>
+                                        {order.user}
+                                    </TableCell>
+                                    <TableCell>
+                                        {order.shipping_address}
+                                    </TableCell>
+                                    <TableCell>
+                                        <StatusDropdown 
+                                        status={order.status}  />   
+                                    </TableCell>
+                                    <TableCell>
+                                        <Link to={`/orderDetail/${order._id}`}>
+                                            <IconButton edge='end'>
                                                 <ArrowForwardIosIcon />
-                                            </Avatar>
-                                        </IconButton>
-                                    </Link>
-                                </ListItemSecondaryAction>
-                                <ListItemAvatar>
-                                    <Inventory2Icon />
-                                </ListItemAvatar>
-                                <ListItemText 
-                                    primary={order.user}
-                                    secondary={order.createdAt.toString()}
-                                />
-                                <ListItemText>
-                                    <Typography variant='h6'>
-                                    {order.code}
-                                    </Typography>
-                                    
-                                </ListItemText>
-                                <ListItemText>
-                                    <Typography variant='subtitle1'>
-                                    {order.shipping_address}
-                                    </Typography>
-                                    
-                                </ListItemText>
-                                <StatusDropdown 
-                                status={order.status} 
-                                orderId={order._id}
-                                onStatusChange={(newStatus)=>handleStatusChange(order._id, newStatus)} />
-                            </ListItem>
-                        ))
-                    ) : (
-                        <Typography>No Data Found.</Typography>
-                    )
-                }
-            </List>
+                                            </IconButton>
+                                        </Link>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        ) : (
+                            <Typography>No Data Found.</Typography>
+                        )
+                    }
+                </TableBody>
+            </Table>
         </Box>
-        <Box marginTop={4}>
+        <Box marginTop={2}>
             <PaginatedComp currentPage={currentPage} totalPage={totalPage} onPageChange={handlePageChange} />
         </Box>
     </DashboardLayout>

@@ -8,7 +8,6 @@ import OrderList from './Pages/Order/OrderList.jsx';
 import OrderDetail from './Pages/Order/OrderDetail.jsx';
 import UserList from './Pages/User/UserList.jsx';
 import RedirectAuth from './Pages/RouteMiddlewares/RedirectAuth.jsx';
-import RedirectNotStaff from './Pages/RouteMiddlewares/RedirectNoStatff.jsx';
 import RedirectNotAdmin from './Pages/RouteMiddlewares/RedirectNotAdmin.jsx';
 import ProductEdit from './Pages/Product/ProductEdit.jsx';
 import ReviewList from './Pages/Review/ReviewList.jsx';
@@ -27,26 +26,20 @@ const MainRouter = () : React.JSX.Element => {
                     </RedirectAuth>
                 }/>
                 <Route path='/product' element={
-                    <RedirectNotStaff>
-                        <ProductList />
-                    </RedirectNotStaff>
+                    <ProductList />
                 }/>
                 <Route path='product/create' element={
-                    <RedirectNotStaff>
-                        <ProductCreate /> 
-                    </RedirectNotStaff>
+                    <ProductCreate /> 
                 } />
 
-                <Route path='/customer' element={
+                <Route path='/user' element={
                     <RedirectNotAdmin>
                         <UserList />
                     </RedirectNotAdmin>
                 }/>
                 <Route 
                     path='product/edit/:id' element={
-                        <RedirectNotStaff>
-                            <ProductEdit />
-                        </RedirectNotStaff>
+                        <ProductEdit />
                     }
                 />
                 <Route path='order' element={

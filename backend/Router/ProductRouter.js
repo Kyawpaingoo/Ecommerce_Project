@@ -8,10 +8,10 @@ ProductRouter.get('/all', getProductList);
 ProductRouter.get('/:id', getProductById);
 
 //Staff
-ProductRouter.post('/store',checkAuth, checkAuthorize('staff'), createProduct);
-ProductRouter.get("/edit/:id", checkAuth, checkAuthorize('staff'), editProduct);
-ProductRouter.post('/update/:id', checkAuth, checkAuthorize('staff'), updateProduct);
-ProductRouter.post('/destroy/:id', checkAuth, checkAuthorize('staff'), deleteProduct);
+ProductRouter.post('/store',checkAuth, createProduct);
+ProductRouter.get("/edit/:id", checkAuth, editProduct);
+ProductRouter.post('/update/:id', checkAuth, updateProduct);
+ProductRouter.post('/destroy/:id', checkAuth, deleteProduct);
 
 
 

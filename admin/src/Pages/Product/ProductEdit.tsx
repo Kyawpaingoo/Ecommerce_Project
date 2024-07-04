@@ -21,7 +21,6 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-
 const ProductEdit : React.FC = () => {
   const {id} = useParams<{id: string}>();
   const {filterData, productData} = useProductEditHook(id);
@@ -38,18 +37,21 @@ const ProductEdit : React.FC = () => {
   const [errMessage, setErrMessage] = useState<string>('');
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(productData){
+  useEffect(() => {
+    if (productData) {
       setName(productData.name);
-      setPrice(productData.price.toString());
-      setStock(productData?.stock.toString());
+      setPrice(productData.price?.toString());
+      setStock(productData.stock?.toString());
       setSelectedBrand(productData.brand);
       setSelectedCategory(productData.category);
       setSelectedGender(productData.gender);
-      setSelectedColor(productData.color.map(color=> color._id));
-      setSelectedImage(productData.image);
+      setSelectedColor(
+        productData.color?.map((color) => color._id)
+      );
+      setSelectedImage(data.host + productData.image);
+      console.log(selectedImage);
     }
-  })
+  }, [productData]);
 
   const update = async()=>{
     var formData = new FormData();
@@ -93,7 +95,7 @@ const ProductEdit : React.FC = () => {
 }
   return (
     <DashboardLayout>
-      <Grid container component={Paper} spacing={4} sx={{ width:'120vh', marginX: 25, marginY: 5, paddingBottom: 4}} elevation={6} square>
+      <Grid container component={Paper} spacing={4} sx={{ width:'120vh', marginX: 15, marginY: 5, paddingBottom: 4}} elevation={6} square>
         <Grid item md={12}>
         {
             errMessage && (
@@ -224,7 +226,7 @@ const ProductEdit : React.FC = () => {
             </Box>
             <FormControl sx={{ mt: 1, width: 300 }}>
                 {
-                    selectedColor.length > 0 && (
+                    selectedColor?.length > 0 && (
                         <>
                             <InputLabel id="color">Color</InputLabel>
                             <Select
